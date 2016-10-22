@@ -23,7 +23,7 @@
     "prepublish": "npm run build"
   },
   "bin": {
-    "cg-watch": "./bin/cg-watch.sh"
+    "cg-watch": "./bin/cg-watch.js"
   },
   "dependencies": {
     "babel-plugin-transform-runtime": "^6.15.0",

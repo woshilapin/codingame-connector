@@ -8,6 +8,17 @@ First, you need NodeJS installed on your machine.  If you don't, you can take a
 look to the [nvm](https://github.com/creationix/nvm) project which allow you to
 install Node without root access.
 
+## Global installation
+You can simply install the `cg-watch` command with the following command.
+
+```
+npm install -g codingame-connector
+```
+
+Then you can use it from any folder with `cg-watch` (see for configuration
+below).
+
+## Local installation
 To install `codingame-connector`, you can clone the project.  Then you'll have
 to install the Node modules.
 
