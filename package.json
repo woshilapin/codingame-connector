@@ -1,6 +1,6 @@
 {
   "name": "codingame-connector",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An interface for Codingame website",
   "keywords": [
     "codingame",
