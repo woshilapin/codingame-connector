@@ -54,9 +54,4 @@ Each time the file is changed and saved, `codingame-connector` will launch the
 tests on Codingame.  Note that it will stop to test on the first one that fail.
 To get an idea, see this [asciinema](https://asciinema.org).
 
-<script
-	type="text/javascript"
-	src="https://asciinema.org/a/7mr1ji4yqqs2xxt4an769nmn8.js"
-	id="asciicast-7mr1ji4yqqs2xxt4an769nmn8" async>
-</script>
-
+[![asciicast](https://asciinema.org/a/7mr1ji4yqqs2xxt4an769nmn8.png)](https://asciinema.org/a/7mr1ji4yqqs2xxt4an769nmn8)
