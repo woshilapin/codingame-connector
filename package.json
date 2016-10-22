@@ -2,27 +2,39 @@
   "name": "codingame-connector",
   "version": "0.0.1",
   "description": "An interface for Codingame website",
+  "keywords": [
+    "codingame",
+    "watch"
+  ],
   "license": "GPL-3.0",
-  "private": true,
-  "authors": {
-    "name": "woshilapin",
-    "email": "woshilapin@tuziwo.info"
+  "homepage": "https://github.com/woshilapin/codingame-connector",
+  "author": "woshilapin <woshilapin@tuziwo.info>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/woshilapin/codingame-connector.git"
   },
+  "bugs": {
+    "url": "https://github.com/woshilapin/codingame-connector/issues"
+  },
+  "main": "src/codingame-api.js",
   "scripts": {
     "start": "babel-node src/watch.js",
-    "build": "babel src --out-dir dist"
+    "build": "rimraf ./lib/* && babel src --out-dir lib",
+    "prepublish": "npm run build"
   },
-  "babel": {
-    "presets": [
-      "es2015-node-auto"
-    ]
+  "bin": {
+    "cg-watch": "./bin/cg-watch.sh"
   },
   "dependencies": {
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-runtime": "^6.11.6",
     "node-options": "0.0.7",
     "request": "^2.75.0"
   },
   "devDependencies": {
     "babel-cli": "^6.16.0",
-    "babel-preset-es2015-node-auto": "0.0.5"
+    "babel-core": "^6.17.0",
+    "babel-preset-es2015-node-auto": "0.0.5",
+    "rimraf": "^2.5.4"
   }
 }
