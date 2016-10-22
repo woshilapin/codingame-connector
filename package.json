@@ -1,0 +1,28 @@
+{
+  "name": "codingame-connector",
+  "version": "0.0.1",
+  "description": "An interface for Codingame website",
+  "license": "GPL-3.0",
+  "private": true,
+  "authors": {
+    "name": "woshilapin",
+    "email": "woshilapin@tuziwo.info"
+  },
+  "scripts": {
+    "start": "babel-node src/watch.js",
+    "build": "babel src --out-dir dist"
+  },
+  "babel": {
+    "presets": [
+      "es2015-node-auto"
+    ]
+  },
+  "dependencies": {
+    "node-options": "0.0.7",
+    "request": "^2.75.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.16.0",
+    "babel-preset-es2015-node-auto": "0.0.5"
+  }
+}

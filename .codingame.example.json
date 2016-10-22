@@ -1,0 +1,8 @@
+{
+	"username": "my@email.me",
+	"password": "myP4ssw0rd",
+	"language": "Python",
+	"exercise": "5711567e959cf54dd2dd79c1b4c259560d6ba46",
+	"tests": [1, 2, 3, 4, 5, 6],
+	"bundle": "bundle.py"
+}
