@@ -97,6 +97,9 @@ var log = function log(conf) {
 var logged = loadConfigurationFile(opts)
 .then(function(conf) {
 	return log(conf);
+}, function(error) {
+	console.error(error.message);
+	process.exit(-1);
 });
 
 var display = function display(test, results) {
