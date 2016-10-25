@@ -38,20 +38,76 @@ It's pretty simple, you give to the program a configuration file (default to
 {
 	"username": "my@email.me",
 	"password": "myP4ssw0rd",
-	"language": "Python",
 	"exercise": "5711567e959cf54dd2dd79c1b4c259560d6ba46",
 	"tests": [1, 2, 3, 4, 5, 6],
+	"language": "Python",
 	"bundle": "bundle.py"
 }
 ```
 
+## Username and password
+There is 3 different ways to give your username and password.
+
+### In the configuration file
+As simple as the following.
+
+```
+{
+	"username": "my@email.me",
+	"password": "myP4ssw0rd",
+	...
+}
+```
+
+### Through a command in the configuration file
+You can also give a command in the configuration file, the output of this
+command will be considered the username or password.  For example, imagine you
+encrypted your `username` and `password` in GPG files `username.gpg` and
+`password.gpg` with the following command.
+
+```
+gpg2 --encrypt username
+gpg2 --encrypt password
+```
+
+Then you could use the following in your configuration file.
+
+```
+{
+	"username": ["gpg2", "--decrypt", "username.gpg"],
+	"password": ["gpg2", "--decrypt", "password.gpg"],
+	...
+}
+```
+
+Note that you might want to encrypt only the password.
+
+```
+{
+	"username": "my@email.me",
+	"password": ["gpg2", "--decrypt", "password.gpg"],
+	...
+}
+```
+
+### Neither of them
+If you don't put anything in your configuration file, the software will ask for
+it and keep them as long as the software is running.
+
+## Exercise ID
 To find the `exercise` hash, you'll have to open the webbrowser, browser to the
 exercise you'll try to solve and open the IDE.  Then look into your URL, you'll
 find the hash.
 
+## Tests
 `tests` are an array of all the test's number available in the IDE of Codingame
 (not the validators!).
 
+## Language
+Is a value among all the available languages in Codingame.  Be careful of the
+case as `Python` will work but `python` will not.
+
+## Bundle
 `bundle` is the path towards the file containing your code.
 
 If you prefer to not put your `username` and `password` in a plain file on your

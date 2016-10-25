@@ -1,5 +1,6 @@
 import fs from 'fs';
 import readline from 'readline';
+import subprocess from 'child_process'
 import options from 'node-options';
 import cgapi from './codingame-api.js';
 
@@ -42,17 +43,22 @@ var loadConfigurationFile = function loadConfigurationFile(opts) {
 	});
 };
 
-var getCredentials = function credentials(conf) {
+var getConfigurationField = function getConfigurationField(type, field) {
 	return new Promise(function(resolve, reject) {
-		if (conf.username && conf.password) {
-			resolve(conf);
+		if (field && typeof field === 'string') {
+			resolve(field);
+		} else if (field && Array.isArray(field)) {
+			subprocess.exec(field.join(' '), function(error, stdout, stderr) {
+				if (error) {
+					console.error(stderr);
+					reject(error);
+				} else {
+					resolve(stdout.trim());
+				}
+			});
 		} else {
-			rl.question('Give your email: ', (username) => {
-				conf.username = username;
-				rl.question('Give your password: ', (password) => {
-					conf.password = password;
-					resolve(conf);
-				});
+			rl.question(`What is your ${type}? `, (field) => {
+				resolve(field);
 			});
 		}
 	});
@@ -62,8 +68,13 @@ var tries = 0;
 var log = function log(conf) {
 	tries += 1;
 	return new Promise(function(resolve, reject) {
-		getCredentials(conf)
-		.then(function(conf) {
+		getConfigurationField('username', conf.username)
+		.then(function(username) {
+			conf.username = username;
+			return getConfigurationField('password', conf.password);
+		})
+		.then(function(password) {
+			conf.password = password;
 			cgapi.login(conf.username, conf.password)
 			.then(function(res) {
 				if (!res.error) {
