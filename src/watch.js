@@ -141,31 +141,45 @@ var check = function check(exercise, test, language, bundle) {
 };
 
 var watch = function watch(opts) {
-	var watcher = fs.watch(opts.bundle, {'persistent': false, 'recursive': false, 'encoding': 'utf8'});
-	watcher.on('change', function(event, filename) {
-		if (opts.verbose) {
-			console.log(`---> File '${filename}' has been '${event}'.`);
-		}
-		if (event === 'change') {
-			var chain = new Promise(function(resolve) {resolve(true)});
-			for (var test of opts.tests) {
-				let index = test;
-				chain = chain.then(function(passed) {
-					if (passed) {
-						return check(opts.exercise, index, opts.language, opts.bundle);
-					} else {
-						return new Promise(function(resolve) {resolve(false)});
+	fs.stat(opts.bundle, function(error, stats) {
+		if ( error || ( stats.isFile && !stats.isFile() ) ) {
+			console.log(`---> No such file '${opts.bundle}'.`)
+			console.log('---> Retrying in 5s');
+			setTimeout(watch, 5000, opts);
+		} else {
+			var watcher = fs.watch(opts.bundle, {
+				'persistent': false,
+				'recursive': false,
+				'encoding': 'utf8'
+			});
+			watcher.on('change', function(event, filename) {
+				if (opts.verbose) {
+					console.log(`---> File '${filename}' has been '${event}'.`);
+				}
+				if (event === 'change') {
+					var chain = new Promise(function(resolve) {resolve(true)});
+					for (var test of opts.tests) {
+						let index = test;
+						chain = chain.then(function(passed) {
+							if (passed) {
+								return check(opts.exercise, index, opts.language, opts.bundle);
+							} else {
+								return new Promise(function(resolve) {resolve(false)});
+							}
+						}, function(error) {
+							return new Promise(function(resolve, reject) { reject(error) });
+						});
 					}
-				}, function(error) {
-					return new Promise(function(resolve, reject) { reject(error) });
-				});
-			}
-			chain.then(function() {
-				watcher.close();
-				watch(opts);
+					chain.then(function() {
+						watcher.close();
+						watch(opts);
+					}, function(error) {
+						console.error(error);
+					});
+				}
 			});
 		}
-	});
+	})
 };
 
 logged.then(watch);
