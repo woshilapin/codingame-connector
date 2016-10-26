@@ -1,7 +1,8 @@
 import fs from 'fs';
 import readline from 'readline';
+import subprocess from 'child_process'
 
-var conf = {};
+var parameters = {};
 
 const rl = readline.createInterface({
 	input: process.stdin,
@@ -19,9 +20,9 @@ var load = function load(path, opts) {
 					if (error) {
 						reject(error);
 					} else {
-						conf = JSON.parse(file);
-						Object.assign(conf, opts);
-						resolve(conf);
+						parameters = JSON.parse(file);
+						Object.assign(parameters, opts);
+						resolve(parameters);
 					}
 				});
 			}
@@ -29,39 +30,52 @@ var load = function load(path, opts) {
 	});
 };
 
-var get = function get(name, question) {
+var get = function get(name, question, options) {
 	return new Promise(function(resolve, reject) {
 		if (!name || typeof name !== 'string') {
-			reject(new Error(`configuration: 'get' function takes at least one string parameter.`));
+			reject(new Error(`'configure.get()' takes at least one string parameter.`));
 		}
-		var property = conf[name];
-		if (property !== undefined && typeof property === 'string') {
-			resolve(property);
-		} else if (property !== undefined && Array.isArray(property)) {
+		if (question !== undefined && typeof question === 'object') {
+			options = question;
+			question = undefined;
+		}
+		var property = parameters[name];
+		if (property !== undefined && options !== undefined && options.tryShell === true && Array.isArray(property)) {
 			subprocess.exec(property.join(' '), function(error, stdout, stderr) {
 				if (error) {
 					console.error(stderr);
 					reject(error);
 				} else {
 					var result = stdout.trim();
-					conf[name] = result;
+					parameters[name] = result;
 					resolve(result);
 				}
 			});
-		} else if (property === undefined) {
+		} else if (property !== undefined) {
+			resolve(property);
+		} else {
 			if (question !== undefined && typeof question === 'string') {
 				rl.question(question, (result) => {
-					conf[name] = result;
+					parameters[name] = result;
 					resolve(result);
 				});
 			} else {
-				reject(new Error(`configuration: second parameter of 'get' function must be a string.`));
+				reject(new Error(`'configure.get()' second parameter must be a string.`));
 			}
 		}
 	});
 };
 
+var forget = function forget(name) {
+	if (!name || typeof name !== 'string') {
+		throw new Error(`'configure.forget()' function takes one string parameter.`);
+	} else {
+		delete parameters[name];
+	}
+};
+
 export default {
 	'load': load,
-	'get': get
+	'get': get,
+	'forget': forget
 };

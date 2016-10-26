@@ -1,53 +1,53 @@
 import fs from 'fs';
-import subprocess from 'child_process'
 import options from 'node-options';
 
-import configuration from './configuration.js';
+import configure from './configure.js';
 import cgapi from './codingame-api.js';
 
 var opts = {
-	'conf': '.codingamerc',
+	'configuration': '.codingamerc',
 };
 var result = options.parse(process.argv.slice(2), opts);
 
 if (result.errors) {
-	console.log('USAGE: [--conf=<conf-file>] <watch|check>');
+	console.log('USAGE: [--configuration=<configuration-file>] <watch|check>');
 	process.exit(-1);
 }
 
 var tries = 0;
-var log = function log(conf) {
+var log = function log() {
 	tries += 1;
 	return new Promise(function(resolve, reject) {
-		configuration.get('username', 'login? ')
+		var credentials = {};
+		configure.get('username', 'login? ', { 'tryShell': true })
 		.then(function(username) {
-			conf.username = username;
-			return configuration.get('password', 'password? ');
+			credentials.username = username;
+			return configure.get('password', 'password? ', { 'tryShell': true });
 		})
 		.then(function(password) {
-			conf.password = password;
-			cgapi.login(conf.username, conf.password)
-			.then(function(res) {
-				if (!res.error) {
-					resolve(conf);
+			credentials.password = password;
+			return cgapi.login(credentials.username, credentials.password);
+		})
+		.then(function(res) {
+			if (!res.error) {
+				resolve(res);
+			} else {
+				if (tries < 3) {
+					console.warn('Unable to login (try #' + tries + ')')
+					configure.forget('username');
+					configure.forget('password');
+					resolve(log());
 				} else {
-					if (tries < 3) {
-						console.warn('Unable to login (try #' + tries + ')')
-						delete conf.username;
-						delete conf.password;
-						resolve(log(conf));
-					} else {
-						reject(new Error('Unable to login (after 3 tries).'))
-					}
+					reject(new Error('Unable to login (after 3 tries).'))
 				}
-			});
+			}
 		});
 	});
 };
 
-var logged = configuration.load(opts.conf, opts)
-.then(function(conf) {
-	return log(conf);
+var logged = configure.load(opts.configuration, opts)
+.then(function(configuration) {
+	return log();
 }, function(error) {
 	console.error(error.message);
 	process.exit(-1);
@@ -91,44 +91,56 @@ var check = function check(exercise, test, language, bundle) {
 	});
 };
 
-var watch = function watch(opts) {
-	fs.stat(opts.bundle, function(error, stats) {
-		if ( error || ( stats.isFile && !stats.isFile() ) ) {
-			console.log(`---> No such file '${opts.bundle}'.`)
-			console.log('---> Retrying in 5s');
-			setTimeout(watch, 5000, opts);
-		} else {
-			var watcher = fs.watch(opts.bundle, {
-				'persistent': false,
-				'recursive': false,
-				'encoding': 'utf8'
-			});
-			console.log(`Waiting for changes in '${opts.bundle}'...`);
-			watcher.on('change', function(event, filename) {
-				if (event === 'change') {
-					var chain = new Promise(function(resolve) {resolve(true)});
-					for (var test of opts.tests) {
-						let index = test;
-						chain = chain.then(function(passed) {
-							if (passed) {
-								return check(opts.exercise, index, opts.language, opts.bundle);
-							} else {
-								return new Promise(function(resolve) {resolve(false)});
-							}
+var watch = function watch() {
+	Promise.all([
+		configure.get('exercise'),
+		configure.get('tests'),
+		configure.get('language'),
+		configure.get('bundle')
+	])
+	.then(function (results) {
+		var exercise = results[0];
+		var tests = results[1];
+		var language = results[2];
+		var bundle = results[3];
+		fs.stat(bundle, function(error, stats) {
+			if ( error || ( stats.isFile && !stats.isFile() ) ) {
+				console.log(`---> No such file '${bundle}'.`)
+				console.log('---> Retrying in 5s');
+				setTimeout(watch, 5000);
+			} else {
+				var watcher = fs.watch(bundle, {
+					'persistent': false,
+					'recursive': false,
+					'encoding': 'utf8'
+				});
+				console.log(`Waiting for changes in '${bundle}'...`);
+				watcher.on('change', function(event, filename) {
+					if (event === 'change') {
+						var chain = new Promise(function(resolve) {resolve(true)});
+						for (var t of tests) {
+							let test = t;
+							chain = chain.then(function(passed) {
+								if (passed) {
+									return check(exercise, test, language, bundle);
+								} else {
+									return new Promise(function(resolve) {resolve(false)});
+								}
+							}, function(error) {
+								return new Promise(function(resolve, reject) { reject(error) });
+							});
+						}
+						chain.then(function() {
+							watcher.close();
+							watch(opts);
 						}, function(error) {
-							return new Promise(function(resolve, reject) { reject(error) });
+							console.error(error);
 						});
 					}
-					chain.then(function() {
-						watcher.close();
-						watch(opts);
-					}, function(error) {
-						console.error(error);
-					});
-				}
-			});
-		}
-	})
+				});
+			}
+		});
+	});
 };
 
 logged.then(watch);
