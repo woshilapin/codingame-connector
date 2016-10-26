@@ -6,7 +6,7 @@ import configuration from './configuration.js';
 import cgapi from './codingame-api.js';
 
 var opts = {
-	'conf': '.codingame.json',
+	'conf': '.codingamerc',
 	'verbose': false
 };
 var result = options.parse(process.argv.slice(2), opts);

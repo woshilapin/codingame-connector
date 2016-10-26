@@ -32,7 +32,7 @@ Then you can launch it (see configuration below) with `npm start`.
 
 # Configuration
 It's pretty simple, you give to the program a configuration file (default to
-`.codingame.json`) of the following form.
+`.codingamerc`) of the following form.
 
 ```
 {

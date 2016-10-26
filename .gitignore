@@ -1,6 +1,6 @@
 node_modules/
 lib/
-.codingame*
-!.codingame.example.json
+.codingamerc
+!.codingamerc.example
 bundle.*
 *.swp
