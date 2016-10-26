@@ -7,12 +7,11 @@ import cgapi from './codingame-api.js';
 
 var opts = {
 	'conf': '.codingamerc',
-	'verbose': false
 };
 var result = options.parse(process.argv.slice(2), opts);
 
 if (result.errors) {
-	console.log('USAGE: [--verbose] [--conf=<conf-file>] <watch|check>');
+	console.log('USAGE: [--conf=<conf-file>] <watch|check>');
 	process.exit(-1);
 }
 
@@ -106,9 +105,6 @@ var watch = function watch(opts) {
 			});
 			console.log(`Waiting for changes in '${opts.bundle}'...`);
 			watcher.on('change', function(event, filename) {
-				if (opts.verbose) {
-					console.log(`---> File '${filename}' has been '${event}'.`);
-				}
 				if (event === 'change') {
 					var chain = new Promise(function(resolve) {resolve(true)});
 					for (var test of opts.tests) {
