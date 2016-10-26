@@ -1,7 +1,8 @@
 import fs from 'fs';
-import readline from 'readline';
 import subprocess from 'child_process'
 import options from 'node-options';
+
+import configuration from './configuration.js';
 import cgapi from './codingame-api.js';
 
 var opts = {
@@ -15,63 +16,14 @@ if (result.errors) {
 	process.exit(-1);
 }
 
-const rl = readline.createInterface({
-	input: process.stdin,
-	output: process.stdout
-});
-
-var loadConfigurationFile = function loadConfigurationFile(opts) {
-	return new Promise(function(resolve, reject) {
-		if (opts.verbose) {
-			console.log(`---> Reading config file '${opts.conf}'...`);
-		}
-		fs.readFile(opts.conf, 'utf8', function(error, file) {
-			if (error) {
-				if (opts.verbose) {
-					console.log(`---> Error when loading the config file '${opts.conf}'.`);
-				}
-				reject(error);
-			} else {
-				var conf = JSON.parse(file);
-				if (opts.verbose) {
-					console.log(`---> Config file '${opts.conf}' loaded.`);
-				}
-				Object.assign(opts, conf);
-				resolve(opts);
-			}
-		});
-	});
-};
-
-var getConfigurationField = function getConfigurationField(type, field) {
-	return new Promise(function(resolve, reject) {
-		if (field && typeof field === 'string') {
-			resolve(field);
-		} else if (field && Array.isArray(field)) {
-			subprocess.exec(field.join(' '), function(error, stdout, stderr) {
-				if (error) {
-					console.error(stderr);
-					reject(error);
-				} else {
-					resolve(stdout.trim());
-				}
-			});
-		} else {
-			rl.question(`What is your ${type}? `, (field) => {
-				resolve(field);
-			});
-		}
-	});
-};
-
 var tries = 0;
 var log = function log(conf) {
 	tries += 1;
 	return new Promise(function(resolve, reject) {
-		getConfigurationField('username', conf.username)
+		configuration.get('username', 'login? ')
 		.then(function(username) {
 			conf.username = username;
-			return getConfigurationField('password', conf.password);
+			return configuration.get('password', 'password? ');
 		})
 		.then(function(password) {
 			conf.password = password;
@@ -94,7 +46,7 @@ var log = function log(conf) {
 	});
 };
 
-var logged = loadConfigurationFile(opts)
+var logged = configuration.load(opts.conf, opts)
 .then(function(conf) {
 	return log(conf);
 }, function(error) {
@@ -152,6 +104,7 @@ var watch = function watch(opts) {
 				'recursive': false,
 				'encoding': 'utf8'
 			});
+			console.log(`Waiting for changes in '${opts.bundle}'...`);
 			watcher.on('change', function(event, filename) {
 				if (opts.verbose) {
 					console.log(`---> File '${filename}' has been '${event}'.`);
