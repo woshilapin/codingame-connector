@@ -3,55 +3,22 @@ import options from 'node-options';
 
 import configure from './configure.js';
 import cgapi from './codingame-api.js';
+import utils from './utils.js';
 
 var opts = {
 	'configuration': '.codingamerc',
 };
 var result = options.parse(process.argv.slice(2), opts);
 
+var help = 'USAGE: [--configuration=<configuration-file>] <watch|check>';
 if (result.errors) {
-	console.log('USAGE: [--configuration=<configuration-file>] <watch|check>');
-	process.exit(-1);
+	utils.kill(new Error(help));
 }
-
-var tries = 0;
-var log = function log() {
-	tries += 1;
-	return new Promise(function(resolve, reject) {
-		var credentials = {};
-		configure.get('username', 'login? ', { 'tryShell': true })
-		.then(function(username) {
-			credentials.username = username;
-			return configure.get('password', 'password? ', { 'tryShell': true });
-		})
-		.then(function(password) {
-			credentials.password = password;
-			return cgapi.login(credentials.username, credentials.password);
-		})
-		.then(function(res) {
-			if (!res.error) {
-				resolve(res);
-			} else {
-				if (tries < 3) {
-					console.warn('Unable to login (try #' + tries + ')')
-					configure.forget('username');
-					configure.forget('password');
-					resolve(log());
-				} else {
-					reject(new Error('Unable to login (after 3 tries).'))
-				}
-			}
-		});
-	});
-};
 
 var logged = configure.load(opts.configuration, opts)
 .then(function(configuration) {
-	return log();
-}, function(error) {
-	console.error(error.message);
-	process.exit(-1);
-});
+	return utils.login();
+}, utils.kill);
 
 var display = function display(test, results) {
 	if (results.success) {
@@ -143,4 +110,4 @@ var watch = function watch() {
 	});
 };
 
-logged.then(watch);
+logged.then(watch, utils.kill);
