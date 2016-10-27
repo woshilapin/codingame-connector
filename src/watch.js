@@ -29,10 +29,7 @@ let watch = function watch() {
 		configure.get('bundle', 'file')
 	])
 	.then(function (results) {
-		let exercise = results[0];
-		let tests = results[1];
-		let language = results[2];
-		let bundle = results[3];
+		let [exercise, tests, language, bundle] = results;
 		let watcher = fs.watch(bundle.path, {
 			'persistent': false,
 			'recursive': false,
