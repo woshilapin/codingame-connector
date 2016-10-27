@@ -1,19 +1,18 @@
 import request from 'request';
-import fs from 'fs';
 
 let login = function login(username, password) {
 	return new Promise(function(resolve, reject) {
 		let options = {
-			'method': 'POST',
-			'baseUrl': 'https://www.codingame.com',
-			'uri': '/services/CodingamerRemoteService/loginSiteV2',
-			'headers': {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json;charset=utf-8'
+			"method": `POST`,
+			"baseUrl": `https://www.codingame.com`,
+			"uri": `/services/CodingamerRemoteService/loginSiteV2`,
+			"headers": {
+				"Accept": `application/json`,
+				"Content-Type": `application/json;charset=utf-8`
 			},
-			'body': [username, password, true],
-			'jar': true,
-			'json': true
+			"body": [username, password, true],
+			"jar": true,
+			"json": true
 		};
 		request(options, function(error, response, body) {
 			if (response.statusCode >= 400) {
@@ -28,35 +27,35 @@ let login = function login(username, password) {
 let test = function test(exercise, test, language, bundle) {
 	return new Promise(function(resolve, reject) {
 		let options = {
-			'method': 'POST',
-			'baseUrl': 'https://www.codingame.com',
-			'uri': '/services/TestSessionRemoteService/play',
-			'headers': {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json;charset=utf-8'
+			"method": `POST`,
+			"baseUrl": `https://www.codingame.com`,
+			"uri": `/services/TestSessionRemoteService/play`,
+			"headers": {
+				"Accept": `application/json`,
+				"Content-Type": `application/json;charset=utf-8`
 			},
-			'body': [
+			"body": [
 				exercise,
 				{
-					'code': bundle,
-					'programmingLanguageId': language,
-					'multipleLanguages': {
-						'testIndex': test
+					"code": bundle,
+					"programmingLanguageId": language,
+					"multipleLanguages": {
+						"testIndex": test
 					}
 				}
 			],
-			'jar': true,
-			'json': true
+			"jar": true,
+			"json": true
 		};
 		request(options, function(error, response, body) {
 			if (response.statusCode >= 400) {
 				reject(error);
 			} else {
 				let meta = {
-					'exercise': exercise,
-					'test': test,
-					'language': language,
-					'bundle': bundle
+					"exercise": exercise,
+					"test": test,
+					"language": language,
+					"bundle": bundle
 				};
 				if (body.success !== undefined) {
 					if (body.success.comparison !== undefined) {
@@ -82,6 +81,6 @@ let test = function test(exercise, test, language, bundle) {
 };
 
 export default {
-	'login': login,
-	'test': test
+	"login": login,
+	"test": test
 };

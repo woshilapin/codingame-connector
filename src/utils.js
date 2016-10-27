@@ -7,14 +7,14 @@ let kill = function kill(error) {
 };
 
 let login = function login(tries) {
-	if (tries === undefined || typeof tries !== 'number') {
+	if (tries === undefined || typeof tries !== `number`) {
 		tries = 3;
 	}
 	let credentials = {};
-	return configure.get('username', 'shell', 'login? ')
+	return configure.get(`username`, `shell`, `login? `)
 	.then(function(username) {
 		credentials.username = username;
-		return configure.get('password', 'shell', 'password? ');
+		return configure.get(`password`, `shell`, `password? `);
 	})
 	.then(function(password) {
 		credentials.password = password;
@@ -26,12 +26,12 @@ let login = function login(tries) {
 		} else {
 			tries -= 1;
 			if (tries > 0) {
-				console.warn(`Unable to login (${tries} ${tries>1?'tries':'try'} remaining).`);
-				configure.forget('username');
-				configure.forget('password');
+				console.warn(`Unable to login (${tries} ${tries>1?`tries`:`try`} remaining).`);
+				configure.forget(`username`);
+				configure.forget(`password`);
 				return Promise.resolve(login(tries));
 			} else {
-				return Promise.reject(new Error('Unable to login.'))
+				return Promise.reject(new Error(`Unable to login.`));
 			}
 		}
 	});
@@ -66,7 +66,7 @@ let tests = function tests(exercise, tests, language, bundle) {
 };
 
 export default {
-	'kill': kill,
-	'login': login,
-	'tests': tests
+	"kill": kill,
+	"login": login,
+	"tests": tests
 };

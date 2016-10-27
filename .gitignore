@@ -2,5 +2,6 @@ node_modules/
 lib/
 .codingamerc
 !.codingamerc.example
+.eslintcache
 bundle.*
 *.swp
