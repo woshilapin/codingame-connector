@@ -1,3 +1,12 @@
+/**
+ * @file Module 'configure'
+ * @author woshilapin <woshilapin@tuziwo.info>
+ * @version 0.3.0
+ */
+/**
+ * Manage global configuration for Codingame's connector
+ * @module configure
+ */
 import fs from 'fs';
 import readline from 'readline';
 import subprocess from 'child_process';
@@ -10,6 +19,17 @@ const rl = readline.createInterface({
 });
 
 
+/**
+ * Load the configuration file
+ *
+ * @name load
+ * @function
+ * @param {string} path Path of the configuration file
+ * @param {Object} opts Additionnal parameters which will replace parameters from configuration file
+ * @returns {Promise<Object>} Configuration parameters
+ * @memberof module:configure
+ * @instance
+ */
 let load = function load(path, opts) {
 	return new Promise(function(resolve, reject) {
 		fs.readFile(path, `utf8`, function(error, file) {
@@ -24,6 +44,18 @@ let load = function load(path, opts) {
 	});
 };
 
+/**
+ * Get the value from configuration
+ *
+ * @name get
+ * @function
+ * @param {string} name Name of the parameter
+ * @param {string} option 'shell' if value may be executed as shell command, 'file' if value is a path and content of file should be returned
+ * @param {string} [question] If present and value not found, will be shown to the user to ask for the value on 'stdin'
+ * @returns {Promise<string|Array|Object>} The value of the parameter
+ * @memberof module:configure
+ * @instance
+ */
 let get = function get(name, option, question) {
 	return new Promise(function(resolve, reject) {
 		if (!name || typeof name !== `string`) {
@@ -67,6 +99,15 @@ let get = function get(name, option, question) {
 	});
 };
 
+/**
+ * Ask configure module to delete a parameter
+ *
+ * @name forget
+ * @function
+ * @param {string} name Name of the parameter
+ * @memberof module:configure
+ * @instance
+ */
 let forget = function forget(name) {
 	if (!name || typeof name !== `string`) {
 		throw new Error(`'configure.forget()' function takes one string parameter.`);

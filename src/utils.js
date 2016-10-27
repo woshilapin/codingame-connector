@@ -1,11 +1,39 @@
+/**
+ * @file Module 'utils'
+ * @author woshilapin <woshilapin@tuziwo.info>
+ * @version 0.3.0
+ */
+/**
+ * Some utils for Codingame's connector
+ * @module utils
+ */
 import configure from './configure.js';
 import cgapi from './codingame-api.js';
 
+/**
+ * Display the error and kill the program
+ *
+ * @name kill
+ * @function
+ * @param {Error} error The error that caused the problem
+ * @memberof module:utils
+ * @instance
+ */
 let kill = function kill(error) {
 	console.error(`error: ${error.message}`);
 	process.exit(-1);
 };
 
+/**
+ * Log in Codingame website
+ *
+ * @name login
+ * @function
+ * @param {number} tries Number of tries before returning an error
+ * @returns {Promise<Object>} The response from the server
+ * @memberof module:utils
+ * @instance
+ */
 let login = function login(tries) {
 	if (tries === undefined || typeof tries !== `number`) {
 		tries = 3;
@@ -37,6 +65,19 @@ let login = function login(tries) {
 	});
 };
 
+/**
+ * Launch the test suite on Codingame
+ *
+ * @name tests
+ * @function
+ * @param {string} exercise Hash of the exercise to test
+ * @param {Array} tests The list of test's numbers
+ * @param {string} language The language of the bundle to send
+ * @param {string} bundle Content of the program to send
+ * @returns {Promise<Array>} All results; or in case of error, all results until error + the error as last element of the array
+ * @memberof module:utils
+ * @instance
+ */
 let tests = function tests(exercise, tests, language, bundle) {
 	let suite = Promise.resolve();
 	let failed = false;

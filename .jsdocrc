@@ -1,0 +1,18 @@
+{
+	"tags": {
+		"allowUnknownTags": false,
+		"dictionaries": [ "jsdoc" ]
+	},
+	"plugins": [
+		"plugins/markdown",
+		"node_modules/jsdoc-babel"
+	],
+	"opts": {
+		"destination": "./docs/",
+		"encoding": "utf8",
+		"package": "package.json",
+		"private": true,
+		"recurse": true,
+		"readme": "README.md"
+	}
+}

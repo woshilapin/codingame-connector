@@ -1,5 +1,25 @@
+/**
+ * @file Module 'codingame-api'
+ * @author woshilapin <woshilapin@tuziwo.info>
+ * @version 0.3.0
+ */
+/**
+ * API for Codingame's services
+ * @module codingame-api
+ */
 import request from 'request';
 
+/**
+ * Codingame's API to log in
+ *
+ * @name login
+ * @function
+ * @param {string} username The login to authenticate
+ * @param {string} password The password to authenticate
+ * @returns {Promise<Object>} Body of the response
+ * @memberof module:codingame-api
+ * @instance
+ */
 let login = function login(username, password) {
 	return new Promise(function(resolve, reject) {
 		let options = {
@@ -24,6 +44,19 @@ let login = function login(username, password) {
 	});
 };
 
+/**
+ * Codingame's API for launching a test
+ *
+ * @name test
+ * @function
+ * @param {string} exercise Hash of the exercise to test
+ * @param {number} test Test's number
+ * @param {string} language Language of the program to send
+ * @param {string} bundle Content of the program to send
+ * @returns {Promise<Object>} The result only if request succeed and test passed
+ * @memberof module:codingame-api
+ * @instance
+ */
 let test = function test(exercise, test, language, bundle) {
 	return new Promise(function(resolve, reject) {
 		let options = {

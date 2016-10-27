@@ -1,3 +1,8 @@
+/**
+ * @file Main entry point of Codingame's Connector
+ * @author woshilapin <woshilapin@tuziwo.info>
+ * @version 0.3.0
+ */
 import fs from 'fs';
 import options from 'node-options';
 
@@ -20,6 +25,12 @@ let logged = configure.load(opts.configuration, opts)
 }, utils.kill);
 
 
+/**
+ * Start the watching process of the bundle file
+ *
+ * @name watch
+ * @function
+ */
 let watch = function watch() {
 	Promise.all([
 		configure.get(`exercise`),
