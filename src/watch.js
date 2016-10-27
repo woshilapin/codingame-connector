@@ -4,26 +4,10 @@
  * @version 0.3.0
  */
 import fs from 'fs';
-import options from 'node-options';
+import commander from 'commander';
 
 import configure from './configure.js';
 import utils from './utils.js';
-
-let opts = {
-	"configuration": `.codingamerc`
-};
-let result = options.parse(process.argv.slice(2), opts);
-
-let help = `USAGE: [--configuration=<configuration-file>] <watch|check>`;
-if (result.errors) {
-	utils.kill(new Error(help));
-}
-
-let logged = configure.load(opts.configuration, opts)
-.then(function() {
-	return utils.login();
-}, utils.kill);
-
 
 /**
  * Start the watching process of the bundle file
@@ -65,4 +49,32 @@ let watch = function watch() {
 	}, utils.kill);
 };
 
-logged.then(watch, utils.kill);
+// Load package.json
+new Promise(function(resolve, reject) {
+	fs.readFile(`package.json`, `utf8`, function(error, content) {
+		if (error) {
+			reject(error);
+		} else {
+			resolve(JSON.parse(content));
+		}
+	});
+})
+// Read program options and arguments
+.then(function(packagejson) {
+	let defaultconfiguration = `.codingamerc`;
+	commander
+		.version(packagejson.version)
+		.command(`cg-watch`)
+		.description(`Watch for change on a program and test it against Codingame`)
+		.option(`-c, --configuration <path>`, `Configuration file [default=${defaultconfiguration}]`, defaultconfiguration)
+		.parse(process.argv);
+	return Promise.resolve(commander);
+})
+// Load configuration file
+.then(function(commander) {
+	return configure.load(commander.configuration, {});
+})
+.then(function() {
+	return utils.login();
+}, utils.kill)
+.then(watch, utils.kill);
