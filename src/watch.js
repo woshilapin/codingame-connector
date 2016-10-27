@@ -74,7 +74,9 @@ new Promise(function(resolve, reject) {
 .then(function(commander) {
 	return configure.load(commander.configuration, {});
 })
+// Log in Codingame
 .then(function() {
 	return utils.login();
 }, utils.kill)
+// Launch wathing task
 .then(watch, utils.kill);
