@@ -1,16 +1,16 @@
 import configure from './configure.js';
 import cgapi from './codingame-api.js';
 
-var kill = function kill(error) {
+let kill = function kill(error) {
 	console.error(`error: ${error.message}`);
 	process.exit(-1);
 };
 
-var login = function login(tries) {
+let login = function login(tries) {
 	if (tries === undefined || typeof tries !== 'number') {
 		tries = 3;
 	}
-	var credentials = {};
+	let credentials = {};
 	return configure.get('username', 'shell', 'login? ')
 	.then(function(username) {
 		credentials.username = username;
@@ -37,10 +37,10 @@ var login = function login(tries) {
 	});
 };
 
-var tests = function tests(exercise, tests, language, bundle) {
-	var suite = Promise.resolve();
-	var failed = false;
-	var results = [];
+let tests = function tests(exercise, tests, language, bundle) {
+	let suite = Promise.resolve();
+	let failed = false;
+	let results = [];
 	for (let test of tests) {
 		suite = suite.then(function(result) {
 			if (result !== undefined) {

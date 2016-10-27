@@ -2,7 +2,7 @@ import fs from 'fs';
 import readline from 'readline';
 import subprocess from 'child_process'
 
-var parameters = {};
+let parameters = {};
 
 const rl = readline.createInterface({
 	input: process.stdin,
@@ -10,7 +10,7 @@ const rl = readline.createInterface({
 });
 
 
-var load = function load(path, opts) {
+let load = function load(path, opts) {
 	return new Promise(function(resolve, reject) {
 		fs.readFile(path, 'utf8', function(error, file) {
 			if (error) {
@@ -24,19 +24,19 @@ var load = function load(path, opts) {
 	});
 };
 
-var get = function get(name, option, question) {
+let get = function get(name, option, question) {
 	return new Promise(function(resolve, reject) {
 		if (!name || typeof name !== 'string') {
 			reject(new Error(`'configure.get()' takes at least one string parameter.`));
 		}
-		var property = parameters[name];
+		let property = parameters[name];
 		if (property !== undefined && option !== undefined && option === 'shell' && Array.isArray(property)) {
 			subprocess.exec(property.join(' '), function(error, stdout, stderr) {
 				if (error) {
 					console.error(stderr);
 					reject(error);
 				} else {
-					var result = stdout.trim();
+					let result = stdout.trim();
 					parameters[name] = result;
 					resolve(result);
 				}
@@ -64,7 +64,7 @@ var get = function get(name, option, question) {
 	});
 };
 
-var forget = function forget(name) {
+let forget = function forget(name) {
 	if (!name || typeof name !== 'string') {
 		throw new Error(`'configure.forget()' function takes one string parameter.`);
 	} else {

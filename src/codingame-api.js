@@ -1,9 +1,9 @@
 import request from 'request';
 import fs from 'fs';
 
-var login = function login(username, password) {
+let login = function login(username, password) {
 	return new Promise(function(resolve, reject) {
-		var options = {
+		let options = {
 			'method': 'POST',
 			'baseUrl': 'https://www.codingame.com',
 			'uri': '/services/CodingamerRemoteService/loginSiteV2',
@@ -25,9 +25,9 @@ var login = function login(username, password) {
 	});
 };
 
-var test = function test(exercise, test, language, bundle) {
+let test = function test(exercise, test, language, bundle) {
 	return new Promise(function(resolve, reject) {
-		var options = {
+		let options = {
 			'method': 'POST',
 			'baseUrl': 'https://www.codingame.com',
 			'uri': '/services/TestSessionRemoteService/play',
@@ -52,7 +52,7 @@ var test = function test(exercise, test, language, bundle) {
 			if (response.statusCode >= 400) {
 				reject(error);
 			} else {
-				var meta = {
+				let meta = {
 					'exercise': exercise,
 					'test': test,
 					'language': language,
@@ -64,7 +64,7 @@ var test = function test(exercise, test, language, bundle) {
 							Object.assign(body.success, meta);
 							resolve(body.success);
 						} else {
-							var error = new Error(`Expected <${body.success.comparison.expected}> but found <${body.success.comparison.found}>`);
+							let error = new Error(`Expected <${body.success.comparison.expected}> but found <${body.success.comparison.found}>`);
 							Object.assign(error, meta);
 							reject(error);
 						}
@@ -73,7 +73,7 @@ var test = function test(exercise, test, language, bundle) {
 						reject(body.success.error);
 					}
 				}
-				var error = new Error(`Codingame may have change its API, contact owner of this application.`);
+				let error = new Error(`Codingame may have change its API, contact owner of this application.`);
 				Object.assign(error, meta);
 				reject(error);
 			}

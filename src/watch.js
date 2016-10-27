@@ -5,23 +5,23 @@ import configure from './configure.js';
 import cgapi from './codingame-api.js';
 import utils from './utils.js';
 
-var opts = {
+let opts = {
 	'configuration': '.codingamerc',
 };
-var result = options.parse(process.argv.slice(2), opts);
+let result = options.parse(process.argv.slice(2), opts);
 
-var help = 'USAGE: [--configuration=<configuration-file>] <watch|check>';
+let help = 'USAGE: [--configuration=<configuration-file>] <watch|check>';
 if (result.errors) {
 	utils.kill(new Error(help));
 }
 
-var logged = configure.load(opts.configuration, opts)
+let logged = configure.load(opts.configuration, opts)
 .then(function(configuration) {
 	return utils.login();
 }, utils.kill);
 
 
-var watch = function watch() {
+let watch = function watch() {
 	Promise.all([
 		configure.get('exercise'),
 		configure.get('tests'),
@@ -29,11 +29,11 @@ var watch = function watch() {
 		configure.get('bundle', 'file')
 	])
 	.then(function (results) {
-		var exercise = results[0];
-		var tests = results[1];
-		var language = results[2];
-		var bundle = results[3];
-		var watcher = fs.watch(bundle.path, {
+		let exercise = results[0];
+		let tests = results[1];
+		let language = results[2];
+		let bundle = results[3];
+		let watcher = fs.watch(bundle.path, {
 			'persistent': false,
 			'recursive': false,
 			'encoding': 'utf8'
@@ -48,7 +48,7 @@ var watch = function watch() {
 					watcher.close();
 					watch();
 				}, function(results) {
-					var error = results[results.length - 1];
+					let error = results[results.length - 1];
 					console.warn(`[test #${error.test}] Fail: ${error.message}`);
 					watcher.close();
 					watch();
