@@ -12,10 +12,10 @@ var login = function login(tries) {
 	}
 	return new Promise(function(resolve, reject) {
 		var credentials = {};
-		configure.get('username', 'login? ', { 'tryShell': true })
+		configure.get('username', 'shell', 'login? ')
 		.then(function(username) {
 			credentials.username = username;
-			return configure.get('password', 'password? ', { 'tryShell': true });
+			return configure.get('password', 'shell', 'password? ');
 		})
 		.then(function(password) {
 			credentials.password = password;

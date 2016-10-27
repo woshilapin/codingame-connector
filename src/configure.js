@@ -12,35 +12,25 @@ const rl = readline.createInterface({
 
 var load = function load(path, opts) {
 	return new Promise(function(resolve, reject) {
-		fs.stat(path, function(error, stats) {
-			if ( error || ( stats.isFile && !stats.isFile() ) ) {
-				reject(new Error(`No such file '${path}'.`));
+		fs.readFile(path, 'utf8', function(error, file) {
+			if (error) {
+				reject(error);
 			} else {
-				fs.readFile(path, 'utf8', function(error, file) {
-					if (error) {
-						reject(error);
-					} else {
-						parameters = JSON.parse(file);
-						Object.assign(parameters, opts);
-						resolve(parameters);
-					}
-				});
+				parameters = JSON.parse(file);
+				Object.assign(parameters, opts);
+				resolve(parameters);
 			}
 		});
 	});
 };
 
-var get = function get(name, question, options) {
+var get = function get(name, option, question) {
 	return new Promise(function(resolve, reject) {
 		if (!name || typeof name !== 'string') {
 			reject(new Error(`'configure.get()' takes at least one string parameter.`));
 		}
-		if (question !== undefined && typeof question === 'object') {
-			options = question;
-			question = undefined;
-		}
 		var property = parameters[name];
-		if (property !== undefined && options !== undefined && options.tryShell === true && Array.isArray(property)) {
+		if (property !== undefined && option !== undefined && option === 'shell' && Array.isArray(property)) {
 			subprocess.exec(property.join(' '), function(error, stdout, stderr) {
 				if (error) {
 					console.error(stderr);
@@ -49,6 +39,14 @@ var get = function get(name, question, options) {
 					var result = stdout.trim();
 					parameters[name] = result;
 					resolve(result);
+				}
+			});
+		} else if (property !== undefined && option !== undefined && option === 'file') {
+			fs.readFile(property, 'utf8', function(error, file) {
+				if (error) {
+					reject(error);
+				} else {
+					resolve({'path': property, 'content': file});
 				}
 			});
 		} else if (property !== undefined) {
