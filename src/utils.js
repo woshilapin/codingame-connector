@@ -39,7 +39,36 @@ var login = function login(tries) {
 	});
 };
 
+var tests = function tests(exercise, tests, language, bundle) {
+	var suite = Promise.resolve();
+	var failed = false;
+	var results = [];
+	for (let test of tests) {
+		suite = suite.then(function(result) {
+			if (result !== undefined) {
+				results.push(result);
+			}
+			return cgapi.test(exercise, test, language, bundle);
+		}, function(error) {
+			failed = true;
+			return Promise.reject(error);
+		});
+		if (failed) {
+			break;
+		}
+	}
+	return suite
+	.then(function(result) {
+		results.push(result);
+		return Promise.resolve(results);
+	}, function(error) {
+		results.push(error);
+		return Promise.reject(results);
+	});
+};
+
 export default {
 	'kill': kill,
-	'login': login
+	'login': login,
+	'tests': tests
 };

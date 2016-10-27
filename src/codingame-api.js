@@ -8,7 +8,7 @@ var login = function login(username, password) {
 			'baseUrl': 'https://www.codingame.com',
 			'uri': '/services/CodingamerRemoteService/loginSiteV2',
 			'headers': {
-				'Accept': 'application/json, text/plain, */*',
+				'Accept': 'application/json',
 				'Content-Type': 'application/json;charset=utf-8'
 			},
 			'body': [username, password, true],
@@ -25,24 +25,24 @@ var login = function login(username, password) {
 	});
 };
 
-var check = function check(exo_hash, test_index, language, file) {
+var test = function test(exercise, test, language, bundle) {
 	return new Promise(function(resolve, reject) {
-		fs.readFile(file, 'utf8', function(error, code) {
+		fs.readFile(bundle, 'utf8', function(error, code) {
 			var options = {
 				'method': 'POST',
 				'baseUrl': 'https://www.codingame.com',
 				'uri': '/services/TestSessionRemoteService/play',
 				'headers': {
-					'Accept': 'application/json, text/plain, */*',
+					'Accept': 'application/json',
 					'Content-Type': 'application/json;charset=utf-8'
 				},
 				'body': [
-					exo_hash,
+					exercise,
 					{
 						'code': code,
 						'programmingLanguageId': language,
 						'multipleLanguages': {
-							'testIndex': test_index
+							'testIndex': test
 						}
 					}
 				],
@@ -53,7 +53,30 @@ var check = function check(exo_hash, test_index, language, file) {
 				if (response.statusCode >= 400) {
 					reject(error);
 				} else {
-					resolve(body);
+					var meta = {
+						'exercise': exercise,
+						'test': test,
+						'language': language,
+						'bundle': bundle
+					};
+					if (body.success !== undefined) {
+						if (body.success.comparison !== undefined) {
+							if(body.success.comparison.success) {
+								Object.assign(body.success, meta);
+								resolve(body.success);
+							} else {
+								var error = new Error(`Expected <${body.success.comparison.expected}> but found <${body.success.comparison.found}>`);
+								Object.assign(error, meta);
+								reject(error);
+							}
+						} else if (body.success.error !== undefined) {
+							Object.assign(body.success.error, meta);
+							reject(body.success.error);
+						}
+					}
+					var error = new Error(`Codingame may have change its API, contact owner of this application.`);
+					Object.assign(error, meta);
+					reject(error);
 				}
 			});
 		});
@@ -62,5 +85,5 @@ var check = function check(exo_hash, test_index, language, file) {
 
 export default {
 	'login': login,
-	'check': check
+	'test': test
 };
