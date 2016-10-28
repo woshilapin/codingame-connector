@@ -70,40 +70,24 @@ let login = function login(tries) {
  *
  * @name tests
  * @function
- * @param {string} exercise Hash of the exercise to test
- * @param {Array} tests The list of test's numbers
- * @param {string} language The language of the bundle to send
- * @param {string} bundle Content of the program to send
+ * @param {Object} parameters Parameters defining the test to launch
+ * @param {string} parameters.exercise Hash of the exercise to test
+ * @param {Array} parameters.tests The list of test's numbers
+ * @param {string} parameters.language The language of the bundle to send
+ * @param {string} parameters.bundle Content of the program to send
  * @returns {Promise<Array>} All results; or in case of error, all results until error + the error as last element of the array
  * @memberof module:utils
  * @instance
  */
-let tests = function tests(exercise, tests, language, bundle) {
-	let suite = Promise.resolve();
-	let failed = false;
-	let results = [];
+let tests = async function* tests({
+		"exercise": exercise,
+		"tests": tests,
+		"language": language,
+		"bundle": bundle
+	}) {
 	for (let test of tests) {
-		suite = suite.then(function(result) {
-			if (result !== undefined) {
-				results.push(result);
-			}
-			return cgapi.test(exercise, test, language, bundle);
-		}, function(error) {
-			failed = true;
-			return Promise.reject(error);
-		});
-		if (failed) {
-			break;
-		}
+		yield await cgapi.test(exercise, test, language, bundle);
 	}
-	return suite
-	.then(function(result) {
-		results.push(result);
-		return Promise.resolve(results);
-	}, function(error) {
-		results.push(error);
-		return Promise.reject(results);
-	});
 };
 
 export default {
