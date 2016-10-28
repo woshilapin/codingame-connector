@@ -5,9 +5,16 @@
  */
 import fs from 'fs';
 import commander from 'commander';
+import colors from 'colors/safe';
+import ansi from 'ansi-escapes';
 
 import configure from './configure.js';
 import utils from './utils.js';
+
+colors.setTheme({
+	"success": [ "green", "bold" ],
+	"fail": [ "red", "bold" ]
+});
 
 /**
  * Start the watching process of the bundle file
@@ -22,16 +29,15 @@ let watch = async function watch() {
 		"recursive": false,
 		"encoding": `utf8`
 	});
-	console.log(`Watching for changes in '${bundle}'...`);
 	watcher.on(`change`, async function(event) {
 		if (event === `change`) {
+			process.stdout.write(ansi.clearScreen);
 			let [exercise, tests, language, bundle] = await Promise.all([
 				configure.get(`exercise`),
 				configure.get(`tests`),
 				configure.get(`language`),
 				configure.get(`bundle`, `file`)
 			]);
-			console.log(`Launching test suite (${tests.length} tests)...`);
 			const parameters = {
 				"exercise": exercise,
 				"tests": tests,
@@ -41,10 +47,14 @@ let watch = async function watch() {
 			try {
 				let g = utils.tests(parameters);
 				for await (let result of g) {
-					console.log(`[ Test #${result.test} ] PASS`);
+					console.log(`(${colors.success(`✓`)}) test ${result.test}`);
 				}
+				console.log()
+				console.log(colors.bold(`Congratulations!`))
 			} catch (error) {
-				console.warn(`[test #${error.test}] Fail: ${error.message}`);
+				console.warn(`(${colors.fail(`✗`)}) test ${error.test}\t${error.message}`);
+				console.log()
+				console.log(colors.bold(`Fix it and try again!`))
 			} finally {
 				watcher.close();
 				watch();
@@ -82,4 +92,9 @@ new Promise(function(resolve, reject) {
 	return utils.login();
 }, utils.kill)
 // Launch wathing task
-.then(watch, utils.kill);
+.then(async function() {
+	let bundle = await configure.get(`bundle`);
+	process.stdout.write(ansi.clearScreen);
+	console.log(`...watching '${bundle}'...`);
+	watch();
+}, utils.kill);
