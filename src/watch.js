@@ -64,7 +64,6 @@ new Promise(function(resolve, reject) {
 	let defaultconfiguration = `.codingamerc`;
 	commander
 		.version(packagejson.version)
-		.command(`cg-watch`)
 		.description(`Watch for change on a program and test it against Codingame`)
 		.option(`-c, --configuration <path>`, `Configuration file [default=${defaultconfiguration}]`, defaultconfiguration)
 		.parse(process.argv);
