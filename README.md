@@ -121,4 +121,4 @@ Each time the file is changed and saved, `codingame-connector` will launch the
 tests on Codingame.  Note that it will stop to test on the first one that fail.
 To get an idea, see this [asciinema](https://asciinema.org).
 
-[![asciicast](https://asciinema.org/a/7mr1ji4yqqs2xxt4an769nmn8.png)](https://asciinema.org/a/7mr1ji4yqqs2xxt4an769nmn8)
+[![asciicast](https://asciinema.org/a/70b3j97ji6cljn3vgjzowbifa.png)](https://asciinema.org/a/70b3j97ji6cljn3vgjzowbifa)
