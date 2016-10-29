@@ -80,11 +80,11 @@ let login = function login(tries) {
  * @instance
  */
 let tests = async function* tests({
-		"exercise": exercise,
-		"tests": tests,
-		"language": language,
-		"bundle": bundle
-	}) {
+	"exercise": exercise,
+	"tests": tests,
+	"language": language,
+	"bundle": bundle
+}) {
 	for (let test of tests) {
 		yield await cgapi.test(exercise, test, language, bundle);
 	}

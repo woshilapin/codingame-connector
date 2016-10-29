@@ -43,7 +43,7 @@ let watch = async function watch() {
 				"tests": tests,
 				"language": language,
 				"bundle": bundle.content
-			}
+			};
 			try {
 				let g = utils.tests(parameters);
 				for await (let result of g) {
