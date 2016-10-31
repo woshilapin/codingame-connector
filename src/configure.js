@@ -25,19 +25,19 @@ const rl = readline.createInterface({
  * @name load
  * @function
  * @param {string} path Path of the configuration file
- * @param {Object} opts Additionnal parameters which will replace parameters from configuration file
+ * @param {Object} [options] Additionnal parameters which will replace parameters from configuration file
  * @returns {Promise<Object>} Configuration parameters
  * @memberof module:configure
  * @instance
  */
-let load = function load(path, opts) {
+let load = function load(path, options) {
 	return new Promise(function(resolve, reject) {
 		fs.readFile(path, `utf8`, function(error, file) {
 			if (error) {
 				reject(error);
 			} else {
 				parameters = JSON.parse(file);
-				Object.assign(parameters, opts);
+				Object.assign(parameters, options);
 				resolve(parameters);
 			}
 		});
@@ -50,7 +50,7 @@ let load = function load(path, opts) {
  * @name get
  * @function
  * @param {string} name Name of the parameter
- * @param {string} option 'shell' if value may be executed as shell command, 'file' if value is a path and content of file should be returned
+ * @param {string} [option] 'shell' if value may be executed as shell command, 'file' if value is a path and content of file should be returned
  * @param {string} [question] If present and value not found, will be shown to the user to ask for the value on 'stdin'
  * @returns {Promise<string|Array|Object>} The value of the parameter
  * @memberof module:configure
