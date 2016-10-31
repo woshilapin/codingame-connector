@@ -45,8 +45,7 @@ let watch = async function watch() {
 				"bundle": bundle.content
 			};
 			try {
-				let g = utils.tests(parameters);
-				for await (let result of g) {
+				for await (let result of utils.tests(parameters)) {
 					console.log(`(${colors.success(`✓`)}) test ${result.test}`);
 				}
 				console.log()
