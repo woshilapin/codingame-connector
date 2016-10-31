@@ -14,14 +14,5 @@
 		"private": true,
 		"recurse": true,
 		"readme": "README.md"
-	},
-	"babel": {
-		"plugins": [
-			"transform-runtime"
-		],
-		"presets": [
-			"es2015",
-			"stage-3"
-		]
 	}
 }
