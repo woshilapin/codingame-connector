@@ -105,7 +105,7 @@ let test = function test(exercise, test, language, bundle) {
 						reject(body.success.error);
 					}
 				}
-				let error = new Error(`Codingame may have change its API, contact owner of this application.`);
+				let error = new Error(`Codingame may have changed its API, contact owner of this application.`);
 				Object.assign(error, meta);
 				reject(error);
 			}
