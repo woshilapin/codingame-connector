@@ -44,6 +44,8 @@
     "babel-eslint": "^7.1.0",
     "babel-preset-es2015-node-auto": "0.0.5",
     "babel-register": "^6.18.0",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
     "eslint": "^3.8.1",
     "jsdoc": "^3.4.2",
     "jsdoc-babel": "^0.2.1",
