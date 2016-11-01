@@ -12,8 +12,8 @@ import configure from './configure.js';
 import utils from './utils.js';
 
 colors.setTheme({
-	"success": [ "green", "bold" ],
-	"fail": [ "red", "bold" ]
+	"success": [`green`, `bold`],
+	"fail": [`red`, `bold`]
 });
 
 /**
@@ -48,12 +48,12 @@ let watch = async function watch() {
 				for await (let result of utils.tests(parameters)) {
 					console.log(`(${colors.success(`✓`)}) test ${result.test}`);
 				}
-				console.log()
-				console.log(colors.bold(`Congratulations!`))
+				console.log();
+				console.log(colors.bold(`Congratulations!`));
 			} catch (error) {
 				console.warn(`(${colors.fail(`✗`)}) test ${error.test}\t${error.message}`);
-				console.log()
-				console.log(colors.bold(`Fix it and try again!`))
+				console.log();
+				console.log(colors.bold(`Fix it and try again!`));
 			} finally {
 				watcher.close();
 				watch();
