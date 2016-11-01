@@ -22,6 +22,7 @@
     "lint": "eslint --cache --color src/*",
     "doc": "rimraf ./docs/* && jsdoc --configure .jsdocrc src/",
     "build": "rimraf ./lib/* && babel src --out-dir lib",
+    "test": "mocha --require babel-register",
     "prepublish": "npm run build"
   },
   "bin": {
@@ -42,9 +43,11 @@
   "devDependencies": {
     "babel-eslint": "^7.1.0",
     "babel-preset-es2015-node-auto": "0.0.5",
+    "babel-register": "^6.18.0",
     "eslint": "^3.8.1",
     "jsdoc": "^3.4.2",
     "jsdoc-babel": "^0.2.1",
+    "mocha": "^3.1.2",
     "rimraf": "^2.5.4"
   }
 }

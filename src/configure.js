@@ -32,15 +32,26 @@ const rl = readline.createInterface({
  */
 let load = function load(path, options) {
 	return new Promise(function(resolve, reject) {
-		fs.readFile(path, `utf8`, function(error, file) {
-			if (error) {
-				reject(error);
+		let resolvefromerror = function resolvefromerror(error) {
+			if (options !== undefined && typeof options === `object`) {
+				resolve(options);
 			} else {
-				parameters = JSON.parse(file);
-				Object.assign(parameters, options);
-				resolve(parameters);
+				reject(error);
 			}
-		});
+		};
+		try {
+			fs.readFile(path, `utf8`, function(error, file) {
+				if (error) {
+					resolvefromerror(error);
+				} else {
+					parameters = JSON.parse(file);
+					Object.assign(parameters, options);
+					resolve(parameters);
+				}
+			});
+		} catch (error) {
+			resolvefromerror(error);
+		}
 	});
 };
 
