@@ -22,10 +22,8 @@
     "lint": "eslint --cache --color src/*",
     "doc": "rimraf ./docs/* && jsdoc --configure .jsdocrc src/",
     "build": "rimraf ./lib/* && babel src --out-dir lib",
-    "nyc": "nyc mocha ./tests/*.js",
-    "coverage": "nyc report --reporter=text-lcov && codecov",
-    "mocha": "mocha --require babel-register",
-    "test": "npm run nyc",
+    "codecov": "nyc report --reporter=text-lcov && codecov",
+    "test": "nyc mocha",
     "prepublish": "npm run build"
   },
   "bin": {
