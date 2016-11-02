@@ -22,7 +22,9 @@
     "lint": "eslint --cache --color src/*",
     "doc": "rimraf ./docs/* && jsdoc --configure .jsdocrc src/",
     "build": "rimraf ./lib/* && babel src --out-dir lib",
-    "test": "mocha --require babel-register",
+    "nyc": "nyc mocha ./tests/*.js",
+    "mocha": "mocha --require babel-register",
+    "test": "npm run nyc",
     "prepublish": "npm run build"
   },
   "bin": {
@@ -50,6 +52,7 @@
     "jsdoc": "^3.4.2",
     "jsdoc-babel": "^0.2.1",
     "mocha": "^3.1.2",
+    "nyc": "^8.3.2",
     "rimraf": "^2.5.4"
   }
 }

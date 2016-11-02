@@ -1,0 +1,12 @@
+{
+  "cache": true,
+  "check-coverage": false,
+  "exclude": [
+    "**/node_modules/**",
+    "test/**/*.js",
+    "lib/**/*.js"
+  ],
+  "require": [
+    "babel-register"
+  ]
+}
