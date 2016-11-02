@@ -1,0 +1,6 @@
+codecov:
+    branch: master
+
+fixes:
+    - test/test-configure.js::test/configure.test.js
+    - test/test-codingame-api.js::test/codingame-api.test.js
