@@ -1,3 +1,11 @@
+[![Version](https://img.shields.io/npm/v/codingame-connector.svg)](https://www.npmjs.com/package/codingame-connector)
+[![License](https://img.shields.io/npm/l/codingame-connector.svg)](https://www.npmjs.com/package/codingame-connector)
+
+[![Dependencies Status](https://img.shields.io/librariesio/github/woshilapin/codingame-connector.svg)](https://libraries.io/npm/codingame-connector)
+[![Build Status](https://img.shields.io/travis/woshilapin/codingame-connector.svg)](https://travis-ci.org/woshilapin/codingame-connector)
+[![Code Coverage](https://img.shields.io/codecov/c/github/woshilapin/codingame-connector.svg)](https://codecov.io/gh/woshilapin/codingame-connector)
+[![Code Quality](https://img.shields.io/scrutinizer/g/woshilapin/codingame-connector.svg)](https://scrutinizer-ci.com/g/woshilapin/codingame-connector/)
+
 # Presentation
 `codingame-connector` will help you to develop solutions for Codingame exercises
 on your local computer.  You don't need the browser to be open during your
