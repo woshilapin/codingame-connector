@@ -23,8 +23,9 @@
     "doc": "rimraf ./docs/* && jsdoc --configure .jsdocrc src/",
     "build": "rimraf ./lib/* && babel src --out-dir lib",
     "codecov": "nyc report --reporter=text-lcov && codecov",
+    "changelog": "changelog codingame-connector all -m > CHANGELOG.md",
     "test": "nyc mocha",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build && npm run changelog"
   },
   "bin": {
     "cg-watch": "./bin/cg-watch.patch.sh"
@@ -47,6 +48,7 @@
     "babel-register": "^6.18.0",
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
+    "changelog": "^1.0.7",
     "codecov": "^1.0.1",
     "eslint": "^3.8.1",
     "jsdoc": "^3.4.2",
