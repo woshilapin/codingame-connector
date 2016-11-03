@@ -20,7 +20,7 @@
   "scripts": {
     "start": "babel-node --presets es2015-node-auto,stage-3 -- src/watch.js",
     "lint": "eslint --cache --color src/*",
-    "doc": "rimraf ./docs/* && jsdoc --configure .jsdocrc src/",
+    "doc": "rimraf ./doc/* && jsdoc --configure .jsdocrc src/",
     "build": "rimraf ./lib/* && babel src --out-dir lib",
     "codecov": "nyc report --reporter=lcovonly && codecov",
     "changelog": "changelog codingame-connector all -m > CHANGELOG.md",
@@ -57,6 +57,8 @@
     "mock-fs": "^3.12.1",
     "nock": "^9.0.2",
     "nyc": "^8.3.2",
-    "rimraf": "^2.5.4"
+    "rimraf": "^2.5.4",
+    "sinon": "^1.17.6",
+    "sinon-chai": "^2.8.0"
   }
 }

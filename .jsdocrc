@@ -8,11 +8,20 @@
 		"node_modules/jsdoc-babel"
 	],
 	"opts": {
-		"destination": "./docs/",
+		"destination": "./doc/",
 		"encoding": "utf8",
 		"package": "package.json",
 		"private": true,
 		"recurse": true,
 		"readme": "README.md"
+	},
+	"babel": {
+		"plugins": [
+			"transform-runtime"
+		],
+		"presets": [
+			"es2015",
+			"stage-3"
+		]
 	}
 }

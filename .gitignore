@@ -1,6 +1,6 @@
 .nyc_output/
 coverage/
-docs/
+doc/
 node_modules/
 lib/
 .codingamerc
