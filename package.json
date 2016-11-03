@@ -22,7 +22,7 @@
     "lint": "eslint --cache --color src/*",
     "doc": "rimraf ./docs/* && jsdoc --configure .jsdocrc src/",
     "build": "rimraf ./lib/* && babel src --out-dir lib",
-    "codecov": "nyc report --reporter=text-lcov && codecov",
+    "codecov": "nyc report --reporter=lcovonly && codecov",
     "changelog": "changelog codingame-connector all -m > CHANGELOG.md",
     "test": "nyc mocha",
     "prepublish": "npm run build && npm run changelog"
