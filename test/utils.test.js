@@ -31,15 +31,16 @@ describe(`[module] utils`, function() {
 		}));
 	});
 	describe(`[method] login`, function() {
-		let login;
-		let get;
+		let sandbox;
+		beforeEach(function() {
+			sandbox = sinon.sandbox.create();
+		})
 		afterEach(function() {
-			login.restore();
-			get.restore();
+			sandbox.restore();
 		});
 		it(`should resolve if login is successfull`, function() {
-			login = sinon.stub(cgapi, `login`, function() {return Promise.resolve(true)});
-			get = sinon.stub(configure, `get`, function(property) {return Promise.resolve(property);});
+			let login = sinon.stub(cgapi, `login`, function() {return Promise.resolve(true)});
+			let get = sinon.stub(configure, `get`, function(property) {return Promise.resolve(property);});
 			let log = utils.login(`username`, `password`)
 			let calls = log.then(function() {
 				expect(login).to.have.been.calledOnce;
@@ -52,12 +53,12 @@ describe(`[module] utils`, function() {
 			]);
 		});
 		it(`should reject after 3 tries if authentication failed`, mute(function() {
-			login = sinon.stub(cgapi, `login`, function() {
+			login = sandbox.stub(cgapi, `login`, function() {
 				return Promise.resolve({
 					"error": new Error(`Cannot authenticate`)
 				});
 			});
-			get = sinon.stub(configure, `get`, function(property) {return Promise.resolve(property);});
+			get = sandbox.stub(configure, `get`, function(property) {return Promise.resolve(property);});
 			let log = utils.login(`username`, `password`)
 			let calls = log.catch(function() {
 				expect(login).to.have.been.calledThrice;

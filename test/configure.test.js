@@ -86,8 +86,10 @@ describe(`[module] configure`, function() {
 				configure.forget(param);
 			}
 		});
+		let sandbox;
 		beforeEach(function() {
-			createInterface = sinon.stub(readline, 'createInterface', function() {
+			sandbox = sinon.sandbox.create()
+			createInterface = sandbox.stub(readline, 'createInterface', function() {
 				return {
 					"question": function(question, cb) {
 						cb(answer);
@@ -97,7 +99,7 @@ describe(`[module] configure`, function() {
 			});
 		});
 		afterEach(function() {
-			createInterface.restore();
+			sandbox.restore();
 		});
 		it(`should return the string property as it is`, function() {
 			let get = configure.get(`path`);
