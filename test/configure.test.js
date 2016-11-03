@@ -4,7 +4,7 @@ import mockfs from 'mock-fs';
 import sinon from 'sinon';
 import sinonchai from 'sinon-chai';
 
-import readline from 'readline2';
+import readline from 'readline';
 
 import configure from '../src/configure.js';
 
