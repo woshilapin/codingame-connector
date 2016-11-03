@@ -13,12 +13,6 @@ import subprocess from 'child_process';
 
 let parameters = {};
 
-const rl = readline.createInterface({
-	"input": process.stdin,
-	"output": process.stdout
-});
-
-
 /**
  * Load the configuration file
  *
@@ -61,6 +55,77 @@ let load = function load(path, options) {
 };
 
 /**
+ * Get result of a shell command
+ *
+ * @name getShell
+ * @function
+ * @param {string} cmd Shell command to run
+ * @returns {Promise<string>} A promise of the output of the shell command
+ */
+let getShell = function getShell(cmd) {
+	return new Promise(function(resolve, reject) {
+		subprocess.exec(cmd, function(error, stdout, stderr) {
+			if (error) {
+				console.error(stderr);
+				reject(error);
+			} else {
+				let result = stdout.trim();
+				resolve(result);
+			}
+		});
+	})
+};
+
+/**
+ * Get content of a file
+ *
+ * @name getFile
+ * @function
+ * @param {string} path Path to the file
+ * @returns {Promise<Object>} A promise of an object with `path` and `content`
+ */
+let getFile = function getFile(path) {
+	return new Promise(function(resolve, reject) {
+		fs.readFile(path, `utf8`, function(error, file) {
+			if (error) {
+				reject(error);
+			} else {
+				resolve({
+					"path": path,
+					"data": file
+				});
+			}
+		});
+	});
+};
+
+/**
+ * Get answer to a question asked to the end-user
+ *
+ * @name getQuestion
+ * @function
+ * @param {string} question Question to ask to the end-user
+ * @returns {Promise<string>} A promise of the answer of the end-user
+ */
+let getQuestion = function getQuestion(question) {
+	return new Promise(function(resolve, reject) {
+		const rl = readline.createInterface({
+			"input": process.stdin,
+			"output": process.stdout
+		});
+		if (question !== undefined && typeof question === `string`) {
+			rl.question(question, (result) => {
+				rl.close();
+				resolve(result);
+			});
+		} else {
+			rl.close();
+			reject(new Error(`'configure.get()' second parameter must be a string.`));
+		}
+	});
+};
+
+/**
  * Get the value from configuration
  *
  * @name get
@@ -79,38 +144,23 @@ let get = function get(name, option, question) {
 		}
 		let property = parameters[name];
 		if (property !== undefined && option !== undefined && option === `shell` && Array.isArray(property)) {
-			subprocess.exec(property.join(` `), function(error, stdout, stderr) {
-				if (error) {
-					console.error(stderr);
-					reject(error);
-				} else {
-					let result = stdout.trim();
-					parameters[name] = result;
-					resolve(result);
-				}
+			getShell(property.join(` `)).then(function(result) {
+				parameters[name] = result;
+				resolve(result);
+			}, function(error) {
+				reject(error);
 			});
 		} else if (property !== undefined && option !== undefined && option === `file`) {
-			fs.readFile(property, `utf8`, function(error, file) {
-				if (error) {
-					reject(error);
-				} else {
-					resolve({
-						"path": property,
-						"data": file
-					});
-				}
-			});
+			resolve(getFile(property));
 		} else if (property !== undefined) {
 			resolve(property);
 		} else {
-			if (question !== undefined && typeof question === `string`) {
-				rl.question(question, (result) => {
-					parameters[name] = result;
-					resolve(result);
-				});
-			} else {
-				reject(new Error(`'configure.get()' second parameter must be a string.`));
-			}
+			getQuestion(question).then(function(result) {
+				parameters[name] = result;
+				resolve(result);
+			}, function(error) {
+				reject(error);
+			});
 		}
 	});
 };
