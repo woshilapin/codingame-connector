@@ -86,13 +86,14 @@ let getShell = function getShell(cmd) {
  */
 let getFile = function getFile(path) {
 	return new Promise(function(resolve, reject) {
-		fs.readFile(path, `utf8`, function(error, file) {
+		fs.readFile(path, `utf8`, function(error, data) {
 			if (error) {
+				console.error(error.message);
 				reject(error);
 			} else {
 				resolve({
 					"path": path,
-					"data": file
+					"data": data
 				});
 			}
 		});

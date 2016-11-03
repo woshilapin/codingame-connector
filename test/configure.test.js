@@ -66,7 +66,8 @@ describe(`[module] configure`, function() {
 		let defaultconf = {
 			"shell": shellcmd,
 			"wrongshell": [`notacommand`],
-			"path": filepath
+			"path": filepath,
+			"notapath": `/not/a/path`
 		};
 		let answer = `42`;
 		let createInterface;
@@ -119,6 +120,7 @@ describe(`[module] configure`, function() {
 		it(`should return answer to the question`, function() {
 			let ask = `ask something?`;
 			let get = configure.get(`questionproperty`, ``, ask);
+			expect(createInterface).to.be.calledOnce;
 			return expect(get).to.eventually.be.equal(answer);
 		});
 		it(`should reject because property doesn't exist`, function() {
@@ -133,8 +135,13 @@ describe(`[module] configure`, function() {
 			let get = configure.get(`wrongshell`, `shell`);
 			return expect(get).to.eventually.be.rejected;
 		});
+		it(`should reject if file doesn't exist`, function() {
+			let get = configure.get(`notapath`, `file`);
+			return expect(get).to.eventually.be.rejected;
+		});
 		it(`should reject if question is not a string`, function() {
 			let get = configure.get(`incorrectquestionproperty`, ``, 42);
+			expect(createInterface).to.be.calledOnce;
 			return expect(get).to.eventually.be.rejected;
 		});
 	});
