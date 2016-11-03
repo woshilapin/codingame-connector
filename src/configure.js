@@ -8,7 +8,7 @@
  * @module configure
  */
 import fs from 'fs';
-import readline from 'readline';
+import readline from 'readline2';
 import subprocess from 'child_process';
 
 let parameters = {};

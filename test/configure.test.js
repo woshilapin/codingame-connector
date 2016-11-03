@@ -1,11 +1,16 @@
 import chai from 'chai';
 import chaiaspromised from 'chai-as-promised';
 import mockfs from 'mock-fs';
+import sinon from 'sinon';
+import sinonchai from 'sinon-chai';
+
+import readline from 'readline2';
 
 import configure from '../src/configure.js';
 
 let expect = chai.expect;
 chai.use(chaiaspromised);
+chai.use(sinonchai);
 
 describe(`[module] configure`, function() {
 	describe(`[method] load`, function() {
@@ -63,6 +68,8 @@ describe(`[module] configure`, function() {
 			"wrongshell": [`notacommand`],
 			"path": filepath
 		};
+		let answer = `42`;
+		let createInterface;
 		before(function(done) {
 			mockfs({
 				[filepath]: filecontent
@@ -76,6 +83,19 @@ describe(`[module] configure`, function() {
 			for (let param in defaultconf) {
 				configure.forget(param);
 			}
+		});
+		beforeEach(function() {
+			createInterface = sinon.stub(readline, 'createInterface', function() {
+				return {
+					"question": function(question, cb) {
+						cb(answer);
+					},
+					"close": function() {}
+				};
+			});
+		});
+		afterEach(function() {
+			createInterface.restore();
 		});
 		it(`should return the string property as it is`, function() {
 			let get = configure.get(`path`);
@@ -96,6 +116,11 @@ describe(`[module] configure`, function() {
 				"data": filecontent
 			});
 		});
+		it(`should return answer to the question`, function() {
+			let ask = `ask something?`;
+			let get = configure.get(`questionproperty`, ``, ask);
+			return expect(get).to.eventually.be.equal(answer);
+		});
 		it(`should reject because property doesn't exist`, function() {
 			let get = configure.get(`notaproperty`);
 			return expect(get).to.eventually.be.rejected;
@@ -106,6 +131,10 @@ describe(`[module] configure`, function() {
 		});
 		it(`should reject if shell command is failing`, function() {
 			let get = configure.get(`wrongshell`, `shell`);
+			return expect(get).to.eventually.be.rejected;
+		});
+		it(`should reject if question is not a string`, function() {
+			let get = configure.get(`incorrectquestionproperty`, ``, 42);
 			return expect(get).to.eventually.be.rejected;
 		});
 	});
