@@ -3,6 +3,7 @@ import chaiaspromised from 'chai-as-promised';
 import mockfs from 'mock-fs';
 import sinon from 'sinon';
 import sinonchai from 'sinon-chai';
+import mute from 'mute';
 
 import cgapi from '../src/codingame-api.js';
 import configure from '../src/configure.js';
@@ -22,18 +23,16 @@ describe(`[module] utils`, function() {
 		afterEach(function() {
 			exit.restore();
 		});
-		it(`should call process.exit with an negative value`, function() {
+		it(`should call process.exit with an negative value`, mute(function() {
 			let message = `Some error message`;
 			utils.kill(new Error(message));
 			expect(exit).to.have.been.calledOnce;
 			expect(exit.getCall(0).args[0]).to.be.below(0);
-		});
+		}));
 	});
 	describe(`[method] login`, function() {
 		let login;
 		let get;
-		beforeEach(function() {
-		});
 		afterEach(function() {
 			login.restore();
 			get.restore();
@@ -52,7 +51,7 @@ describe(`[module] utils`, function() {
 				calls
 			]);
 		});
-		it(`should reject after 3 tries if authentication failed`, function() {
+		it(`should reject after 3 tries if authentication failed`, mute(function() {
 			login = sinon.stub(cgapi, `login`, function() {
 				return Promise.resolve({
 					"error": new Error(`Cannot authenticate`)
@@ -68,7 +67,7 @@ describe(`[module] utils`, function() {
 				expect(log).to.eventually.be.rejected,
 				calls
 			]);
-		});
+		}));
 	});
 	describe(`[method] tests`, function() {
 	});

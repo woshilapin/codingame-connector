@@ -3,6 +3,7 @@ import chaiaspromised from 'chai-as-promised';
 import mockfs from 'mock-fs';
 import sinon from 'sinon';
 import sinonchai from 'sinon-chai';
+import mute from 'mute';
 
 import readline from 'readline';
 
@@ -128,7 +129,7 @@ describe(`[module] configure`, function() {
 			return expect(get).to.eventually.be.rejected;
 		});
 		it(`should reject if first parameter is not a string`, function() {
-			let get = configure.get(null);
+			let get = configure.get(42);
 			return expect(get).to.eventually.be.rejected;
 		});
 		it(`should reject if shell command is failing`, function() {
