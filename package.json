@@ -18,13 +18,15 @@
   },
   "main": "src/codingame-api.js",
   "scripts": {
-    "start": "babel-node --presets es2015-node-auto,stage-3 -- src/watch.js",
     "lint": "eslint --cache --color src/*",
     "doc": "rimraf ./doc/* && jsdoc --configure .jsdocrc src/",
     "build": "rimraf ./lib/* && babel src --out-dir lib",
     "codecov": "nyc report --reporter=lcovonly && codecov",
     "changelog": "changelog codingame-connector all -m > CHANGELOG.md",
-    "test": "nyc mocha",
+    "mocha": "mocha",
+    "nyc": "nyc mocha",
+    "start": "babel-node --presets es2015-node-auto,stage-3 -- src/watch.js",
+    "test": "npm run nyc",
     "prepublish": "npm run build && npm run changelog"
   },
   "bin": {
