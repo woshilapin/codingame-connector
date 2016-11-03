@@ -124,6 +124,16 @@ describe(`[module] codingame-api`, function() {
 			let test = cgapi.test(exercise, testindex, language, bundle);
 			return expect(test).to.eventually.be.rejected;
 		});
+		it(`should reject because API may have change but still contains 'success' property`, function() {
+			let responsenewapi = {
+				"success": `results`
+			};
+			nock(`https://www.codingame.com`)
+				.post(`/services/TestSessionRemoteService/play`, body)
+				.reply(200, responsenewapi);
+			let test = cgapi.test(exercise, testindex, language, bundle);
+			return expect(test).to.eventually.be.rejected;
+		});
 		it(`should reject because server returned an HTTP error code`, function() {
 			nock(`https://www.codingame.com`)
 				.post(`/services/TestSessionRemoteService/play`, body)

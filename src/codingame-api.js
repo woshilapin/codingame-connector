@@ -90,6 +90,8 @@ let test = function test(exercise, test, language, bundle) {
 					"language": language,
 					"bundle": bundle
 				};
+				let error = new Error(`Codingame may have changed its API, contact owner of this application.`);
+				Object.assign(error, meta);
 				if (body.success !== undefined) {
 					if (body.success.comparison !== undefined) {
 						if(body.success.comparison.success) {
@@ -103,10 +105,10 @@ let test = function test(exercise, test, language, bundle) {
 					} else if (body.success.error !== undefined) {
 						Object.assign(body.success.error, meta);
 						reject(body.success.error);
+					} else {
+						reject(error);
 					}
 				}
-				let error = new Error(`Codingame may have changed its API, contact owner of this application.`);
-				Object.assign(error, meta);
 				reject(error);
 			}
 		});
