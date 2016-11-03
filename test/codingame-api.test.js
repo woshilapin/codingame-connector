@@ -39,4 +39,97 @@ describe(`[module] codingame-api`, function() {
 			return expect(login).to.eventually.be.rejected;
 		});
 	});
+	describe(`[method] test`, function() {
+		let exercise = `5711567e959cf54dd2dd79c1b4c259560d6ba46`;
+		let bundle = `print('1')`;
+		let wrongbundle = `print('-1')`;
+		let expected = `1`;
+		let found = `-`;
+		let language = `Python`;
+		let testindex = 1;
+		let body = [
+			exercise,
+			{
+				"code": bundle,
+				"programmingLanguageId": language,
+				"multipleLanguages": {
+					"testIndex": testindex
+				}
+			}
+		];
+		let meta = {
+			"exercise": exercise,
+			"test": testindex,
+			"language": language,
+			"bundle": bundle
+		};
+		after(function() {
+			nock.cleanAll();
+		});
+		it(`should resolve when test succeeded`, function() {
+			let success = {
+				"comparison": {
+					"success": true
+				}
+			};
+			Object.assign(success, meta);
+			let responsesuccess = {
+				"success": success
+			};
+			nock(`https://www.codingame.com`)
+				.post(`/services/TestSessionRemoteService/play`, body)
+				.reply(200, responsesuccess);
+			let test = cgapi.test(exercise, testindex, language, bundle);
+			return expect(test).to.eventually.be.deep.equal(success);
+		});
+		it(`should reject when result of bundle is not the one expected`, function() {
+			let failresult = {
+				"comparison": {
+					"success": false,
+					"expected": expected,
+					"found": found
+				}
+			};
+			Object.assign(failresult, meta);
+			let responsefailresult = {
+				"success": failresult
+			};
+			let errorfailresult = new Error(`Expected <${expected}> but found <${found}>`);
+			nock(`https://www.codingame.com`)
+				.post(`/services/TestSessionRemoteService/play`, body)
+				.reply(200, responsefailresult);
+			let test = cgapi.test(exercise, testindex, language, bundle);
+			return expect(test).to.eventually.be.rejected.and.have.a.property(`message`, errorfailresult.message);
+		});
+		it(`should reject when bundle does not compile`, function() {
+			let responsefailcompile = {
+				"success":{
+					"error": new Error(`Compilation error`)
+				}
+			};
+			Object.assign(responsefailcompile, meta);
+			nock(`https://www.codingame.com`)
+				.post(`/services/TestSessionRemoteService/play`, body)
+				.reply(200, responsefailcompile);
+			let test = cgapi.test(exercise, testindex, language, bundle);
+			return expect(test).to.eventually.be.rejected;
+		});
+		it(`should reject because API may have change`, function() {
+			let responsenewapi = {
+				"newproperty": `results`
+			};
+			nock(`https://www.codingame.com`)
+				.post(`/services/TestSessionRemoteService/play`, body)
+				.reply(200, responsenewapi);
+			let test = cgapi.test(exercise, testindex, language, bundle);
+			return expect(test).to.eventually.be.rejected;
+		});
+		it(`should reject because server returned an HTTP error code`, function() {
+			nock(`https://www.codingame.com`)
+				.post(`/services/TestSessionRemoteService/play`, body)
+				.reply(403, {});
+			let test = cgapi.test(exercise, testindex, language, bundle);
+			return expect(test).to.eventually.be.rejected;
+		});
+	});
 });
