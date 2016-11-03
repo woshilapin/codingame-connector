@@ -34,6 +34,7 @@ let load = function load(path, options) {
 	return new Promise(function(resolve, reject) {
 		let resolvefromerror = function resolvefromerror(error) {
 			if (options !== undefined && typeof options === `object`) {
+				Object.assign(parameters, options);
 				resolve(options);
 			} else {
 				reject(error);
@@ -44,7 +45,11 @@ let load = function load(path, options) {
 				if (error) {
 					resolvefromerror(error);
 				} else {
-					parameters = JSON.parse(file);
+					try {
+						parameters = JSON.parse(file);
+					} catch (error) {
+						reject(error);
+					}
 					Object.assign(parameters, options);
 					resolve(parameters);
 				}
@@ -91,7 +96,7 @@ let get = function get(name, option, question) {
 				} else {
 					resolve({
 						"path": property,
-						"content": file
+						"data": file
 					});
 				}
 			});
@@ -100,6 +105,7 @@ let get = function get(name, option, question) {
 		} else {
 			if (question !== undefined && typeof question === `string`) {
 				rl.question(question, (result) => {
+					throw new Error('aaaahahhahah')
 					parameters[name] = result;
 					resolve(result);
 				});
@@ -120,7 +126,7 @@ let get = function get(name, option, question) {
  * @instance
  */
 let forget = function forget(name) {
-	if (!name || typeof name !== `string`) {
+	if (typeof name !== `string`) {
 		throw new Error(`'configure.forget()' function takes one string parameter.`);
 	} else {
 		delete parameters[name];
