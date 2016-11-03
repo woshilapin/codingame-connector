@@ -105,7 +105,6 @@ let get = function get(name, option, question) {
 		} else {
 			if (question !== undefined && typeof question === `string`) {
 				rl.question(question, (result) => {
-					throw new Error('aaaahahhahah')
 					parameters[name] = result;
 					resolve(result);
 				});

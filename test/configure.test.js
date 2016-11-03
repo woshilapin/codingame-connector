@@ -117,7 +117,7 @@ describe(`[module] configure`, function() {
 			configure.load(undefined, conf);
 		})
 		it(`should forget about the parameter`, function() {
-			let forget = configure.forget(`property`);
+			configure.forget(`property`);
 			let get = configure.get(`property`);
 			return expect(get).to.eventually.be.rejected;
 		});
