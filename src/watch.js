@@ -7,9 +7,15 @@ import fs from 'fs';
 import commander from 'commander';
 import colors from 'colors/safe';
 import ansi from 'ansi-escapes';
+import readline from 'readline2';
 
 import configure from './configure.js';
 import utils from './utils.js';
+
+const rl = readline.createInterface({
+	"stdin": process.stdin,
+	"stdout": process.stdout
+});
 
 colors.setTheme({
 	"success": [`green`, `bold`],
