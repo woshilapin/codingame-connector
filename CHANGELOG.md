@@ -1,3 +1,49 @@
+0.5.0 / 2016-11-04
+==================
+
+  * Improve code style with ESlint
+  * Fine check of all tests
+  * Reactivate the 'check-coverage' option
+  * Fix the use of 'mute' package in tests
+  * Fix the testing of 'utils' module
+  * Add testing for 'utils' module
+  * Sandboxing the use of Sinonjs
+  * Mute log to console in mocha tests
+  * Add some tests for 'utils' module
+  * Improve branching coverage of 'codingame-api' module
+  * Improve the 'keep event-loop running'
+  * Remove use of 'readline2' and use default 'readline' instead
+  * Keep the event loop running for the program to not stop
+  * Improve coverage for 'codingame-api' module
+  * Reach 100% coverage on 'configure' module
+  * Add coverage of questioning in 'configure' module
+  * Reorganise npm script commands
+  * Improve complexity in 'configure' module
+  * Fix JSDoc configuration
+  * Fix configure module
+  * Improve coverage of configure module
+  * New Attempt
+  * Attempt to fix Codecov coverage
+  * Remove fixes in Codecov configuration
+  * Add a codecov.yml configuration file
+  * Change names of testing files
+  * Use nock to mock HTTP requests
+  * Use mock-fs for 'fs' module mocking
+  * Add changelog
+  * Add badges
+  * Simplify integration fo Codecov and Mocha
+  * Update Travis configuration for Codecov
+  * Introduce code coverage with Istanbul and nyc
+  * Use Chai and Chai As Promised as assertion framework
+  * Add Mocha framework in the project
+  * Use Babel as the ESlint parser
+  * Simplify the for-await loop call
+  * Improve JSDoc for configure module
+  * Use es2015 (es25015-node-auto for 'babel-node')
+  * Merge pull request [#24](https://github.com/woshilapin/codingame-connector/issues/24) from chickentuna/fix-typo
+    Fixed a tiny little typo in some text
+  * Fixed a tiny little typo in some text
+
 0.4.3 / 2016-10-29
 ==================
 
