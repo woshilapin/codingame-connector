@@ -135,11 +135,15 @@ describe(`[module] configure`, function() {
 			return expect(get).to.eventually.be.rejected;
 		});
 		it(`should reject if shell command is failing`, function() {
+			let unmute = mute(process.stderr);
 			let get = configure.get(`wrongshell`, `shell`);
+			get.catch(unmute);
 			return expect(get).to.eventually.be.rejected;
 		});
 		it(`should reject if file doesn't exist`, function() {
+			let unmute = mute(process.stderr);
 			let get = configure.get(`notapath`, `file`);
+			get.catch(unmute);
 			return expect(get).to.eventually.be.rejected;
 		});
 		it(`should reject if question is not a string`, function() {

@@ -26,7 +26,9 @@ describe(`[module] utils`, function() {
 		it(`should call process.exit with an negative value`, function() {
 			let exit = sandbox.stub(process, `exit`);
 			let message = `Some error message`;
+			let unmute = mute(process.stderr);
 			utils.kill(new Error(message));
+			unmute();
 			expect(exit).to.have.been.calledOnce;
 			expect(exit.getCall(0).args[0]).to.be.below(0);
 		});
@@ -60,8 +62,10 @@ describe(`[module] utils`, function() {
 				});
 			});
 			let get = sandbox.stub(configure, `get`, function(property) {return Promise.resolve(property);});
+			let unmute = mute(process.stderr);
 			let log = utils.login(`username`, `password`)
 			let calls = log.catch(function() {
+				unmute();
 				expect(login).to.have.been.calledThrice;
 				return Promise.resolve(true);
 			});
