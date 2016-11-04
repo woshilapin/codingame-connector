@@ -27,7 +27,7 @@
     "nyc": "nyc mocha",
     "start": "babel-node --presets es2015-node-auto,stage-3 -- src/watch.js",
     "test": "npm run nyc",
-    "prepublish": "npm run build && npm run changelog"
+    "prepublish": "npm run build"
   },
   "bin": {
     "cg-watch": "./bin/cg-watch.patch.sh"
