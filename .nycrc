@@ -1,6 +1,6 @@
 {
   "cache": true,
-  "check-coverage": false,
+  "check-coverage": true,
   "exclude": [
     "**/node_modules/**",
     "test/**/*.js",
