@@ -23,13 +23,13 @@ describe(`[module] utils`, function() {
 		afterEach(function() {
 			sandbox.restore();
 		});
-		it(`should call process.exit with an negative value`, mute(function() {
+		it(`should call process.exit with an negative value`, function() {
 			let exit = sandbox.stub(process, `exit`);
 			let message = `Some error message`;
 			utils.kill(new Error(message));
 			expect(exit).to.have.been.calledOnce;
 			expect(exit.getCall(0).args[0]).to.be.below(0);
-		}));
+		});
 	});
 	describe(`[method] login`, function() {
 		let sandbox;
@@ -40,8 +40,8 @@ describe(`[module] utils`, function() {
 			sandbox.restore();
 		});
 		it(`should resolve if login is successfull`, function() {
-			let login = sinon.stub(cgapi, `login`, function() {return Promise.resolve(true)});
-			let get = sinon.stub(configure, `get`, function(property) {return Promise.resolve(property);});
+			let login = sandbox.stub(cgapi, `login`, function() {return Promise.resolve(true)});
+			let get = sandbox.stub(configure, `get`, function(property) {return Promise.resolve(property);});
 			let log = utils.login(`username`, `password`)
 			let calls = log.then(function() {
 				expect(login).to.have.been.calledOnce;
@@ -53,13 +53,13 @@ describe(`[module] utils`, function() {
 				calls
 			]);
 		});
-		it(`should reject after 3 tries if authentication failed`, mute(function() {
+		it(`should reject after 3 tries if authentication failed`, function() {
 			let login = sandbox.stub(cgapi, `login`, function() {
 				return Promise.resolve({
 					"error": new Error(`Cannot authenticate`)
 				});
 			});
-			get = sandbox.stub(configure, `get`, function(property) {return Promise.resolve(property);});
+			let get = sandbox.stub(configure, `get`, function(property) {return Promise.resolve(property);});
 			let log = utils.login(`username`, `password`)
 			let calls = log.catch(function() {
 				expect(login).to.have.been.calledThrice;
@@ -69,7 +69,7 @@ describe(`[module] utils`, function() {
 				expect(log).to.eventually.be.rejected,
 				calls
 			]);
-		}));
+		});
 	});
 	describe(`[method] tests`, function() {
 		let sandbox;
