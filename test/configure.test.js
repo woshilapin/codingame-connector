@@ -47,13 +47,13 @@ describe(`[module] configure`, function() {
 
 		it(`should reject because of incorrect file path`, function() {
 			let conf = configure.load(`/incorrect/path/.codingamerc`);
-			return expect(conf).to.eventually.be.rejected;
+			return expect(conf).to.be.rejectedWith(Error);
 		});
 
 		it(`should reject because of incorrect parsing of JSON`, function() {
 			let conf = configure.load(incorrectconfpath);
-			return expect(conf).to.eventually.be.rejected;
-		})
+			return expect(conf).to.be.rejectedWith(Error);
+		});
 
 		it(`should return options if path is incorrect and options is defined`, function() {
 			let conf = configure.load(undefined, defaultconf);
@@ -111,7 +111,7 @@ describe(`[module] configure`, function() {
 		});
 		it(`should return the result of the shell command`, function() {
 			let get = configure.get(`shell`, `shell`);
-			return expect(get).to.eventually.be.deep.equal(filecontent);
+			return expect(get).to.eventually.be.equal(filecontent);
 		});
 		it(`should return the content of the file`, function() {
 			let get = configure.get(`path`, `file`);
@@ -128,28 +128,28 @@ describe(`[module] configure`, function() {
 		});
 		it(`should reject because property doesn't exist`, function() {
 			let get = configure.get(`notaproperty`);
-			return expect(get).to.eventually.be.rejected;
+			return expect(get).to.be.rejectedWith(Error);
 		});
 		it(`should reject if first parameter is not a string`, function() {
 			let get = configure.get(42);
-			return expect(get).to.eventually.be.rejected;
+			return expect(get).to.be.rejectedWith(Error);
 		});
 		it(`should reject if shell command is failing`, function() {
 			let unmute = mute(process.stderr);
 			let get = configure.get(`wrongshell`, `shell`);
 			get.catch(unmute);
-			return expect(get).to.eventually.be.rejected;
+			return expect(get).to.be.rejectedWith(Error);
 		});
 		it(`should reject if file doesn't exist`, function() {
 			let unmute = mute(process.stderr);
 			let get = configure.get(`notapath`, `file`);
 			get.catch(unmute);
-			return expect(get).to.eventually.be.rejected;
+			return expect(get).to.be.rejectedWith(Error);
 		});
 		it(`should reject if question is not a string`, function() {
 			let get = configure.get(`incorrectquestionproperty`, ``, 42);
 			expect(createInterface).to.be.calledOnce;
-			return expect(get).to.eventually.be.rejected;
+			return expect(get).to.be.rejectedWith(Error);
 		});
 	});
 	describe(`[method] forget`, function() {
@@ -162,15 +162,17 @@ describe(`[module] configure`, function() {
 		it(`should forget about the parameter`, function() {
 			configure.forget(`property`);
 			let get = configure.get(`property`);
-			return expect(get).to.eventually.be.rejected;
+			return expect(get).to.be.rejectedWith(Error);
 		});
 		it(`should throw an error when the property is not a string`, function() {
+			let error = {};
 			try {
-				configure.forget(null);
-			} catch(error) {
+				configure.forget(42);
+			} catch(e) {
+				error = e;
+			} finally {
 				return expect(error).to.be.an('error');
 			}
-			return expect(false).to.be.ok;
 		});
 	});
 });

@@ -41,7 +41,7 @@ describe(`[module] utils`, function() {
 		afterEach(function() {
 			sandbox.restore();
 		});
-		it(`should resolve if login is successfull`, function() {
+		it(`should resolve if login is successful`, function() {
 			let login = sandbox.stub(cgapi, `login`, function() {return Promise.resolve(true)});
 			let get = sandbox.stub(configure, `get`, function(property) {return Promise.resolve(property);});
 			let log = utils.login(`username`, `password`)
@@ -51,7 +51,7 @@ describe(`[module] utils`, function() {
 				return Promise.resolve(true);
 			});
 			return Promise.all([
-				expect(log).to.eventually.be.fullfilled,
+				expect(log).to.be.fulfilled,
 				calls
 			]);
 		});
@@ -70,7 +70,7 @@ describe(`[module] utils`, function() {
 				return Promise.resolve(true);
 			});
 			return Promise.all([
-				expect(log).to.eventually.be.rejected,
+				expect(log).to.be.rejectedWith(Error),
 				calls
 			]);
 		});
@@ -94,7 +94,7 @@ describe(`[module] utils`, function() {
 			for await (let result of utils.tests(parameters)) {
 				expect(result).to.have.be.ok;
 			}
-			expect(test).to.have.callCount(3);
+			expect(test).to.have.been.calledThrice;
 		});
 	});
 });

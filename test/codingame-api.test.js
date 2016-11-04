@@ -32,11 +32,11 @@ describe(`[module] codingame-api`, function() {
 		})
 		it(`should resolve with correct username and password`, function() {
 			let login = cgapi.login(credentialsok.username, credentialsok.password);
-			return expect(login).to.eventually.be.fullfilled;
+			return expect(login).to.be.fulfilled;
 		});
 		it(`should reject with incorrect password`, function() {
 			let login = cgapi.login(credentialsnotok.username, credentialsnotok.password);
-			return expect(login).to.eventually.be.rejected;
+			return expect(login).to.be.rejected;
 		});
 	});
 	describe(`[method] test`, function() {
@@ -99,7 +99,7 @@ describe(`[module] codingame-api`, function() {
 				.post(`/services/TestSessionRemoteService/play`, body)
 				.reply(200, responsefailresult);
 			let test = cgapi.test(exercise, testindex, language, bundle);
-			return expect(test).to.eventually.be.rejected.and.have.a.property(`message`, errorfailresult.message);
+			return expect(test).to.be.rejected.and.eventually.have.a.property(`message`, errorfailresult.message);
 		});
 		it(`should reject when bundle does not compile`, function() {
 			let responsefailcompile = {
@@ -112,7 +112,7 @@ describe(`[module] codingame-api`, function() {
 				.post(`/services/TestSessionRemoteService/play`, body)
 				.reply(200, responsefailcompile);
 			let test = cgapi.test(exercise, testindex, language, bundle);
-			return expect(test).to.eventually.be.rejected;
+			return expect(test).to.be.rejected;
 		});
 		it(`should reject because API may have change`, function() {
 			let responsenewapi = {
@@ -122,7 +122,7 @@ describe(`[module] codingame-api`, function() {
 				.post(`/services/TestSessionRemoteService/play`, body)
 				.reply(200, responsenewapi);
 			let test = cgapi.test(exercise, testindex, language, bundle);
-			return expect(test).to.eventually.be.rejected;
+			return expect(test).to.be.rejected;
 		});
 		it(`should reject because API may have change but still contains 'success' property`, function() {
 			let responsenewapi = {
@@ -132,14 +132,14 @@ describe(`[module] codingame-api`, function() {
 				.post(`/services/TestSessionRemoteService/play`, body)
 				.reply(200, responsenewapi);
 			let test = cgapi.test(exercise, testindex, language, bundle);
-			return expect(test).to.eventually.be.rejected;
+			return expect(test).to.be.rejected;
 		});
 		it(`should reject because server returned an HTTP error code`, function() {
 			nock(`https://www.codingame.com`)
 				.post(`/services/TestSessionRemoteService/play`, body)
 				.reply(403, {});
 			let test = cgapi.test(exercise, testindex, language, bundle);
-			return expect(test).to.eventually.be.rejected;
+			return expect(test).to.be.rejected;
 		});
 	});
 });
