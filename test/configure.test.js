@@ -71,7 +71,6 @@ describe(`[module] configure`, function() {
 			"notapath": `/not/a/path`
 		};
 		let answer = `42`;
-		let createInterface;
 		before(function(done) {
 			mockfs({
 				[filepath]: filecontent
@@ -87,6 +86,7 @@ describe(`[module] configure`, function() {
 			}
 		});
 		let sandbox;
+		let createInterface;
 		beforeEach(function() {
 			sandbox = sinon.sandbox.create()
 			createInterface = sandbox.stub(readline, 'createInterface', function() {

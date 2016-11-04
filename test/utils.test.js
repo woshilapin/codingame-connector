@@ -16,14 +16,15 @@ chai.use(sinonchai);
 
 describe(`[module] utils`, function() {
 	describe(`[method] kill`, function() {
-		let exit;
+		let sandbox;
 		beforeEach(function() {
-			exit = sinon.stub(process, `exit`);
+			sandbox = sinon.sandbox.create();
 		});
 		afterEach(function() {
-			exit.restore();
+			sandbox.restore();
 		});
 		it(`should call process.exit with an negative value`, mute(function() {
+			let exit = sandbox.stub(process, `exit`);
 			let message = `Some error message`;
 			utils.kill(new Error(message));
 			expect(exit).to.have.been.calledOnce;
@@ -53,7 +54,7 @@ describe(`[module] utils`, function() {
 			]);
 		});
 		it(`should reject after 3 tries if authentication failed`, mute(function() {
-			login = sandbox.stub(cgapi, `login`, function() {
+			let login = sandbox.stub(cgapi, `login`, function() {
 				return Promise.resolve({
 					"error": new Error(`Cannot authenticate`)
 				});
@@ -71,5 +72,25 @@ describe(`[module] utils`, function() {
 		}));
 	});
 	describe(`[method] tests`, function() {
+		let sandbox;
+		beforeEach(function() {
+			sandbox = sinon.sandbox.create();
+		});
+		afterEach(function() {
+			sandbox.restore();
+		});
+		it(`should yield a result for each of the 3 tests`, async function() {
+			let parameters = {
+				"exercise": `aaa`,
+				"tests": [1, 2, 3],
+				"language": `Python`,
+				"bundle": `print('Hello world!')`
+			};
+			let test = sandbox.stub(cgapi, `test`, function() {return Promise.resolve(true)});
+			for await (let result of utils.tests(parameters)) {
+				expect(result).to.have.be.ok;
+			}
+			expect(test).to.have.callCount(3);
+		});
 	});
 });
