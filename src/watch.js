@@ -45,6 +45,8 @@ let watch = async function watch() {
 				"bundle": bundle.data
 			};
 			try {
+				// ESlint complains about 'for await loops'
+				// https://github.com/babel/babel-eslint/issues/415
 				for await (let result of utils.tests(parameters)) {
 					console.log(`(${colors.success(`✓`)}) test ${result.test}`);
 				}

@@ -98,6 +98,8 @@ describe(`[module] utils`, function() {
 			let test = sandbox.stub(cgapi, `test`, function() {
 				return Promise.resolve(true);
 			});
+			// ESlint complains about 'for await loops'
+			// https://github.com/babel/babel-eslint/issues/415
 			for await (let result of utils.tests(parameters)) {
 				expect(result).to.have.be.ok;
 			}
