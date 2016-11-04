@@ -73,7 +73,7 @@ let getShell = function getShell(cmd) {
 				resolve(result);
 			}
 		});
-	})
+	});
 };
 
 /**

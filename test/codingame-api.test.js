@@ -29,7 +29,7 @@ describe(`[module] codingame-api`, function() {
 		});
 		after(function() {
 			nock.cleanAll();
-		})
+		});
 		it(`should resolve with correct username and password`, function() {
 			let login = cgapi.login(credentialsok.username, credentialsok.password);
 			return expect(login).to.be.fulfilled;
@@ -42,7 +42,6 @@ describe(`[module] codingame-api`, function() {
 	describe(`[method] test`, function() {
 		let exercise = `5711567e959cf54dd2dd79c1b4c259560d6ba46`;
 		let bundle = `print('1')`;
-		let wrongbundle = `print('-1')`;
 		let expected = `1`;
 		let found = `-`;
 		let language = `Python`;

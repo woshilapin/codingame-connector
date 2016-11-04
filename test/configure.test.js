@@ -62,7 +62,7 @@ describe(`[module] configure`, function() {
 	});
 	describe(`[method] get`, function() {
 		let filepath = `file.txt`;
-		let filecontent = `Hello world!`
+		let filecontent = `Hello world!`;
 		let shellcmd = [`echo`, filecontent];
 		let defaultconf = {
 			"shell": shellcmd,
@@ -77,7 +77,7 @@ describe(`[module] configure`, function() {
 			});
 			configure.load(undefined, defaultconf).then(function() {
 				done();
-			})
+			});
 		});
 		after(function() {
 			mockfs.restore();
@@ -88,8 +88,8 @@ describe(`[module] configure`, function() {
 		let sandbox;
 		let createInterface;
 		beforeEach(function() {
-			sandbox = sinon.sandbox.create()
-			createInterface = sandbox.stub(readline, 'createInterface', function() {
+			sandbox = sinon.sandbox.create();
+			createInterface = sandbox.stub(readline, `createInterface`, function() {
 				return {
 					"question": function(question, cb) {
 						cb(answer);
@@ -158,7 +158,7 @@ describe(`[module] configure`, function() {
 		};
 		before(function() {
 			configure.load(undefined, conf);
-		})
+		});
 		it(`should forget about the parameter`, function() {
 			configure.forget(`property`);
 			let get = configure.get(`property`);
@@ -170,9 +170,8 @@ describe(`[module] configure`, function() {
 				configure.forget(42);
 			} catch(e) {
 				error = e;
-			} finally {
-				return expect(error).to.be.an('error');
 			}
+			return expect(error).to.be.an(`error`);
 		});
 	});
 });

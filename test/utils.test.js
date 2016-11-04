@@ -1,6 +1,5 @@
 import chai from 'chai';
 import chaiaspromised from 'chai-as-promised';
-import mockfs from 'mock-fs';
 import sinon from 'sinon';
 import sinonchai from 'sinon-chai';
 import mute from 'mute';
@@ -37,14 +36,18 @@ describe(`[module] utils`, function() {
 		let sandbox;
 		beforeEach(function() {
 			sandbox = sinon.sandbox.create();
-		})
+		});
 		afterEach(function() {
 			sandbox.restore();
 		});
 		it(`should resolve if login is successful`, function() {
-			let login = sandbox.stub(cgapi, `login`, function() {return Promise.resolve(true)});
-			let get = sandbox.stub(configure, `get`, function(property) {return Promise.resolve(property);});
-			let log = utils.login(`username`, `password`)
+			let login = sandbox.stub(cgapi, `login`, function() {
+				return Promise.resolve(true);
+			});
+			let get = sandbox.stub(configure, `get`, function(property) {
+				return Promise.resolve(property);
+			});
+			let log = utils.login(`username`, `password`);
 			let calls = log.then(function() {
 				expect(login).to.have.been.calledOnce;
 				expect(get).to.have.been.calledTwice;
@@ -61,9 +64,11 @@ describe(`[module] utils`, function() {
 					"error": new Error(`Cannot authenticate`)
 				});
 			});
-			let get = sandbox.stub(configure, `get`, function(property) {return Promise.resolve(property);});
+			sandbox.stub(configure, `get`, function(property) {
+				return Promise.resolve(property);
+			});
 			let unmute = mute(process.stderr);
-			let log = utils.login(`username`, `password`)
+			let log = utils.login(`username`, `password`);
 			let calls = log.catch(function() {
 				unmute();
 				expect(login).to.have.been.calledThrice;
@@ -90,7 +95,9 @@ describe(`[module] utils`, function() {
 				"language": `Python`,
 				"bundle": `print('Hello world!')`
 			};
-			let test = sandbox.stub(cgapi, `test`, function() {return Promise.resolve(true)});
+			let test = sandbox.stub(cgapi, `test`, function() {
+				return Promise.resolve(true);
+			});
 			for await (let result of utils.tests(parameters)) {
 				expect(result).to.have.be.ok;
 			}

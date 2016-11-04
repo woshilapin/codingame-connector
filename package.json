@@ -18,7 +18,7 @@
   },
   "main": "src/codingame-api.js",
   "scripts": {
-    "lint": "eslint --cache --color src/*",
+    "lint": "eslint --cache --color src/*.js test/*.js",
     "doc": "rimraf ./doc/* && jsdoc --configure .jsdocrc src/",
     "build": "rimraf ./lib/* && babel src --out-dir lib",
     "codecov": "nyc report --reporter=lcovonly && codecov",
