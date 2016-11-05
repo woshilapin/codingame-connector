@@ -34,4 +34,4 @@ declare -r _SOURCE_DIR_=$( dirname "${_SOURCE_PATH_}" )
 declare -r _ROOT_="${_SOURCE_DIR_}/.."
 declare -r _BABEL_NODE_="${_ROOT_}/node_modules/babel-cli/bin/babel-node.js"
 declare -r _JS_PATH_="${_ROOT_}/lib/watch.js"
-"${_BABEL_NODE_}" --plugins "transform-runtime" --presets "es2015-node-auto,stage-3" -- "${_JS_PATH_}"
+"${_BABEL_NODE_}" --plugins "transform-runtime" --presets "es2015-node-auto,stage-3" -- "${_JS_PATH_}" "${@}"

@@ -64,26 +64,13 @@ let watch = async function watch() {
 	});
 };
 
-// Load package.json
-new Promise(function(resolve, reject) {
-	fs.readFile(`package.json`, `utf8`, function(error, content) {
-		if (error) {
-			reject(error);
-		} else {
-			resolve(JSON.parse(content));
-		}
-	});
-})
 // Read program options and arguments
-.then(function(packagejson) {
-	let defaultconfiguration = `.codingamerc`;
-	commander
-		.version(packagejson.version)
-		.description(`Watch for change on a program and test it against Codingame`)
-		.option(`-c, --configuration <path>`, `Configuration file [default=${defaultconfiguration}]`, defaultconfiguration)
-		.parse(process.argv);
-	return Promise.resolve(commander);
-})
+let defaultconfiguration = `.codingamerc`;
+commander
+	.description(`Watch for change on a program and test it against Codingame`)
+	.option(`-c, --configuration <path>`, `Configuration file [default=${defaultconfiguration}]`, defaultconfiguration)
+	.parse(process.argv);
+Promise.resolve(commander)
 // Load configuration file
 .then(function(commander) {
 	return configure.load(commander.configuration, {});
