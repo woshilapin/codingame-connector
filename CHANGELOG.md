@@ -1,6 +1,15 @@
+0.5.1 / 2016-11-05
+==================
+
+  * [#25](https://github.com/woshilapin/codingame-connector/issues/25) Remove the '--version' option
+  * Remove changelog rule in prepublishing action
+  * Update the Changelog
+
 0.5.0 / 2016-11-04
 ==================
 
+  * Improve testing and coverage of the program
+  * Add comments about a rule bug in ESlint with 'babel-eslint'
   * Improve code style with ESlint
   * Fine check of all tests
   * Reactivate the 'check-coverage' option
