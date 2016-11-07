@@ -1,5 +1,8 @@
 [![Version](https://img.shields.io/npm/v/codingame-connector.svg)](https://www.npmjs.com/package/codingame-connector)
 [![License](https://img.shields.io/npm/l/codingame-connector.svg)](https://www.npmjs.com/package/codingame-connector)
+[![Semantic Release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+[![Commitizen
+friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 [![Dependencies Status](https://img.shields.io/librariesio/github/woshilapin/codingame-connector.svg)](https://libraries.io/npm/codingame-connector)
 [![Build Status](https://img.shields.io/travis/woshilapin/codingame-connector.svg)](https://travis-ci.org/woshilapin/codingame-connector)

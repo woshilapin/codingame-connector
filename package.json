@@ -25,6 +25,7 @@
     "changelog": "changelog codingame-connector all -m > CHANGELOG.md",
     "mocha": "mocha",
     "nyc": "nyc mocha",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "start": "babel-node --presets es2015-node-auto,stage-3 -- src/watch.js",
     "test": "npm run nyc",
     "prepublish": "npm run build"
@@ -52,6 +53,7 @@
     "chai-as-promised": "^6.0.0",
     "changelog": "^1.0.7",
     "codecov": "^1.0.1",
+    "cz-conventional-changelog": "^1.2.0",
     "eslint": "^3.8.1",
     "jsdoc": "^3.4.2",
     "jsdoc-babel": "^0.2.1",
@@ -61,7 +63,13 @@
     "nock": "^9.0.2",
     "nyc": "^8.3.2",
     "rimraf": "^2.5.4",
+    "semantic-release": "^4.3.5",
     "sinon": "^1.17.6",
     "sinon-chai": "^2.8.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
