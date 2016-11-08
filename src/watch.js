@@ -1,7 +1,6 @@
 /**
  * @file Main entry point of Codingame's Connector
  * @author woshilapin <woshilapin@tuziwo.info>
- * @version 0.3.0
  */
 import fs from 'fs';
 import commander from 'commander';

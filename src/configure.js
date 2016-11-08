@@ -1,7 +1,6 @@
 /**
  * @file Module 'configure'
  * @author woshilapin <woshilapin@tuziwo.info>
- * @version 0.3.0
  */
 /**
  * Manage global configuration for Codingame's connector

@@ -1,7 +1,6 @@
 /**
  * @file Module 'utils'
  * @author woshilapin <woshilapin@tuziwo.info>
- * @version 0.3.0
  */
 /**
  * Some utils for Codingame's connector

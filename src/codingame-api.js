@@ -1,7 +1,6 @@
 /**
  * @file Module 'codingame-api'
  * @author woshilapin <woshilapin@tuziwo.info>
- * @version 0.3.0
  */
 /**
  * API for Codingame's services
