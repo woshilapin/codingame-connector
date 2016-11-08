@@ -23,7 +23,7 @@
     "codecov": "nyc report --reporter=lcovonly && codecov",
     "commit": "git cz",
     "doc": "rimraf ./doc/* && jsdoc --configure .jsdocrc src/",
-    "lint": "eslint --cache --color src/*.js test/*.js",
+	"lint": "eslint --cache --color src/**.js test/**.js",
     "mocha": "mocha",
     "nyc": "nyc mocha",
     "prepublish": "npm run build",
