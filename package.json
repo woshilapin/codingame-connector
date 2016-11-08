@@ -18,17 +18,17 @@
   },
   "main": "src/codingame-api.js",
   "scripts": {
-    "lint": "eslint --cache --color src/*.js test/*.js",
-    "doc": "rimraf ./doc/* && jsdoc --configure .jsdocrc src/",
     "build": "rimraf ./lib/* && babel src --out-dir lib",
-    "codecov": "nyc report --reporter=lcovonly && codecov",
     "changelog": "changelog codingame-connector all -m > CHANGELOG.md",
+    "codecov": "nyc report --reporter=lcovonly && codecov",
+    "doc": "rimraf ./doc/* && jsdoc --configure .jsdocrc src/",
+    "lint": "eslint --cache --color src/*.js test/*.js",
     "mocha": "mocha",
     "nyc": "nyc mocha",
+    "prepublish": "npm run build",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "start": "babel-node --presets es2015-node-auto,stage-3 -- src/watch.js",
-    "test": "npm run nyc",
-    "prepublish": "npm run build"
+    "test": "npm run nyc"
   },
   "bin": {
     "cg-watch": "./bin/cg-watch.patch.sh"
