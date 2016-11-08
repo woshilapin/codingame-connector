@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import sinonchai from 'sinon-chai';
 import mute from 'mute';
 
-import cgapi from '../src/codingame-api.js';
+import cgapi from '../src/codingame/api.js';
 import configure from '../src/configure.js';
 
 import utils from '../src/utils.js';

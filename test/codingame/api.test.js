@@ -2,12 +2,12 @@ import chai from 'chai';
 import chaiaspromised from 'chai-as-promised';
 import nock from 'nock';
 
-import cgapi from '../src/codingame-api.js';
+import cgapi from '../../src/codingame/api.js';
 
 let expect = chai.expect;
 chai.use(chaiaspromised);
 
-describe(`[module] codingame-api`, function() {
+describe(`[module] codingame/api`, function() {
 	describe(`[method] login`, function() {
 		let credentialsok = {
 			"username": `me`,

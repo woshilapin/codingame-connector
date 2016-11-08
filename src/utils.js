@@ -7,7 +7,7 @@
  * @module utils
  */
 import configure from './configure.js';
-import cgapi from './codingame-api.js';
+import cgapi from './codingame/api.js';
 
 /**
  * Display the error and kill the program
