@@ -8,6 +8,9 @@
  */
 import request from 'request';
 
+import cgparse from './parse.js';
+import CodingameError from './error.js';
+
 /**
  * Codingame's API to log in
  *
@@ -89,26 +92,15 @@ let test = function test(exercise, test, language, bundle) {
 					"language": language,
 					"bundle": bundle
 				};
-				let error = new Error(`Codingame may have changed its API, contact owner of this application.`);
-				Object.assign(error, meta);
-				if (body.success !== undefined) {
-					if (body.success.comparison !== undefined) {
-						if(body.success.comparison.success) {
-							Object.assign(body.success, meta);
-							resolve(body.success);
-						} else {
-							let error = new Error(`Expected <${body.success.comparison.expected}> but found <${body.success.comparison.found}>`);
-							Object.assign(error, meta);
-							reject(error);
+				cgparse.parse(body)
+					.then(function(success) {
+						resolve(meta);
+					}, function(error) {
+						if (error instanceof CodingameError) {
+							error.attach(meta);
 						}
-					} else if (body.success.error !== undefined) {
-						Object.assign(body.success.error, meta);
-						reject(body.success.error);
-					} else {
 						reject(error);
-					}
-				}
-				reject(error);
+					});
 			}
 		});
 	});

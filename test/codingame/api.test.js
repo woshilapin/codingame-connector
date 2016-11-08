@@ -1,11 +1,16 @@
 import chai from 'chai';
 import chaiaspromised from 'chai-as-promised';
 import nock from 'nock';
+import sinon from 'sinon';
+import sinonchai from 'sinon-chai';
 
 import cgapi from '../../src/codingame/api.js';
+import cgparse from '../../src/codingame/parse.js';
+import CodingameError from '../../src/codingame/error.js';
 
 let expect = chai.expect;
 chai.use(chaiaspromised);
+chai.use(sinonchai);
 
 describe(`[module] codingame/api`, function() {
 	describe(`[method] login`, function() {
@@ -62,76 +67,50 @@ describe(`[module] codingame/api`, function() {
 			"language": language,
 			"bundle": bundle
 		};
-		after(function() {
+		let sandbox;
+		beforeEach(function() {
+			sandbox = sinon.sandbox.create();
+		});
+		afterEach(function() {
+			sandbox.restore();
 			nock.cleanAll();
 		});
-		it(`should resolve when test succeeded`, function() {
-			let success = {
-				"comparison": {
-					"success": true
-				}
-			};
-			Object.assign(success, meta);
-			let responsesuccess = {
-				"success": success
-			};
+		it(`should resolve with metadata if test has succeeded`, function() {
+			let parse = sandbox.stub(cgparse, `parse`, function() {
+				return Promise.resolve(meta);
+			})
 			nock(`https://www.codingame.com`)
 				.post(`/services/TestSessionRemoteService/play`, body)
-				.reply(200, responsesuccess);
+				.reply(200, {});
 			let test = cgapi.test(exercise, testindex, language, bundle);
-			return expect(test).to.eventually.be.deep.equal(success);
+			return expect(test).to.be.fulfilled
+				.and.to.eventually.be.deep.equal(meta);
 		});
-		it(`should reject when result of bundle is not the one expected`, function() {
-			let failresult = {
-				"comparison": {
-					"success": false,
-					"expected": expected,
-					"found": found
-				}
-			};
-			Object.assign(failresult, meta);
-			let responsefailresult = {
-				"success": failresult
-			};
-			let errorfailresult = new Error(`Expected <${expected}> but found <${found}>`);
+		it(`should reject with CodingameError if response is ok but test failed`, function() {
+			let message = `Error message`;
+			let parse = sandbox.stub(cgparse, `parse`, function() {
+				let error = new CodingameError(message);
+				return Promise.reject(error);
+			})
 			nock(`https://www.codingame.com`)
 				.post(`/services/TestSessionRemoteService/play`, body)
-				.reply(200, responsefailresult);
+				.reply(200, {});
 			let test = cgapi.test(exercise, testindex, language, bundle);
-			return expect(test).to.be.rejected.and.eventually.have.a.property(`message`, errorfailresult.message);
+			return expect(test).to.be.rejected
+				.and.to.eventually.be.an.instanceof(CodingameError);
 		});
-		it(`should reject when bundle does not compile`, function() {
-			let responsefailcompile = {
-				"success":{
-					"error": new Error(`Compilation error`)
-				}
-			};
-			Object.assign(responsefailcompile, meta);
+		it(`should reject with Error if parsing failed`, function() {
+			let message = `Error message`;
+			let parse = sandbox.stub(cgparse, `parse`, function() {
+				let error = new Error(message);
+				return Promise.reject(error);
+			})
 			nock(`https://www.codingame.com`)
 				.post(`/services/TestSessionRemoteService/play`, body)
-				.reply(200, responsefailcompile);
+				.reply(200, {});
 			let test = cgapi.test(exercise, testindex, language, bundle);
-			return expect(test).to.be.rejected;
-		});
-		it(`should reject because API may have change`, function() {
-			let responsenewapi = {
-				"newproperty": `results`
-			};
-			nock(`https://www.codingame.com`)
-				.post(`/services/TestSessionRemoteService/play`, body)
-				.reply(200, responsenewapi);
-			let test = cgapi.test(exercise, testindex, language, bundle);
-			return expect(test).to.be.rejected;
-		});
-		it(`should reject because API may have change but still contains 'success' property`, function() {
-			let responsenewapi = {
-				"success": `results`
-			};
-			nock(`https://www.codingame.com`)
-				.post(`/services/TestSessionRemoteService/play`, body)
-				.reply(200, responsenewapi);
-			let test = cgapi.test(exercise, testindex, language, bundle);
-			return expect(test).to.be.rejected;
+			return expect(test).to.be.rejected
+				.and.to.eventually.be.an.instanceof(Error);
 		});
 		it(`should reject because server returned an HTTP error code`, function() {
 			nock(`https://www.codingame.com`)

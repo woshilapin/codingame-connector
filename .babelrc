@@ -1,6 +1,12 @@
 {
 	"plugins": [
-		"transform-runtime"
+		"transform-runtime",
+		[
+			"transform-builtin-extend",
+			{
+				"globals": ["Error", "Array"]
+			}
+		]
 	],
 	"presets": [
 		"es2015",
