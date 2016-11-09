@@ -17,8 +17,8 @@ let parameters = {};
  *
  * @name load
  * @function
- * @param {string} path Path of the configuration file
- * @param {Object} [options] Additionnal parameters which will replace parameters from configuration file
+ * @param {string} path - Path of the configuration file
+ * @param {Object} [options] - Additionnal parameters which will replace parameters from configuration file
  * @returns {Promise<Object>} Configuration parameters
  * @memberof module:configure
  * @instance
@@ -58,7 +58,7 @@ let load = function load(path, options) {
  *
  * @name getShell
  * @function
- * @param {string} cmd Shell command to run
+ * @param {string} cmd - Shell command to run
  * @returns {Promise<string>} A promise of the output of the shell command
  */
 let getShell = function getShell(cmd) {
@@ -80,7 +80,7 @@ let getShell = function getShell(cmd) {
  *
  * @name getFile
  * @function
- * @param {string} path Path to the file
+ * @param {string} path - Path to the file
  * @returns {Promise<Object>} A promise of an object with `path` and `content`
  */
 let getFile = function getFile(path) {
@@ -104,7 +104,7 @@ let getFile = function getFile(path) {
  *
  * @name getQuestion
  * @function
- * @param {string} question Question to ask to the end-user
+ * @param {string} question - Question to ask to the end-user
  * @returns {Promise<string>} A promise of the answer of the end-user
  */
 let getQuestion = function getQuestion(question) {
@@ -130,9 +130,9 @@ let getQuestion = function getQuestion(question) {
  *
  * @name get
  * @function
- * @param {string} name Name of the parameter
- * @param {string} [option] 'shell' if value may be executed as shell command, 'file' if value is a path and content of file should be returned
- * @param {string} [question] If present and value not found, will be shown to the user to ask for the value on 'stdin'
+ * @param {string} name - Name of the parameter
+ * @param {string} [option] - 'shell' if value may be executed as shell command, 'file' if value is a path and content of file should be returned
+ * @param {string} [question] - If present and value not found, will be shown to the user to ask for the value on 'stdin'
  * @returns {Promise<string|Array|Object>} The value of the parameter
  * @memberof module:configure
  * @instance
@@ -170,7 +170,7 @@ let get = function get(name, option, question) {
  *
  * @name forget
  * @function
- * @param {string} name Name of the parameter
+ * @param {string} name - Name of the parameter
  * @memberof module:configure
  * @instance
  */
