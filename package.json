@@ -1,6 +1,6 @@
 {
   "name": "codingame-connector",
-  "version": "0.0.0-semantic-release",
+  "version": "0.0.0",
   "description": "An interface for Codingame website",
   "keywords": [
     "codingame",
