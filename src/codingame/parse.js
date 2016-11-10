@@ -7,11 +7,13 @@
  * @module codingame/parse
  */
 import CodingameError from './error.js';
+import parse_frames from './parsers/frames.js';
 import parse_failcompile from './parsers/failcompile.js';
 import parse_failexpected from './parsers/failexpected.js';
 import parse_success from './parsers/success.js';
 
 let parsers = [];
+parsers.push(parse_frames);
 parsers.push(parse_failcompile);
 parsers.push(parse_failexpected);
 parsers.push(parse_success);
