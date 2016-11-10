@@ -52,7 +52,7 @@ let watch = async function watch() {
 				console.log();
 				console.log(colors.bold(`Congratulations!`));
 			} catch (error) {
-				console.warn(`(${colors.fail(`✗`)}) test ${error.test}\n    ${error.message}`);
+				console.warn(`(${colors.fail(`✗`)}) test ${error.test}\n${error.message}`);
 				console.log();
 				console.log(colors.bold(`Fix it and try again!`));
 			} finally {
