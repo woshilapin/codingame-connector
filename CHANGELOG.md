@@ -1,6 +1,45 @@
+0.6.0 / 2016-11-09
+==================
+
+  * add support of loop-problem
+  * chore: publish a npm version manually
+    fix the semantic release because of a forced rewriting of the git history
+  * docs(npm): add a NPM badge
+    add a NPM badge showing version, dependencies, # of downloads, and # of stars
+  * ci: fix the automatic semantic releasing
+    configure semantic-release with the CLI tool to fix the automatic Travis release
+    closes 34
+  * fix(codingame): add support of loop-problem
+    add parsing of frames from testing problem with an iterative loop
+    closes [#31](https://github.com/woshilapin/codingame-connector/issues/31)
+
+0.5.2 / 2016-11-09
+==================
+
+  * refactor(codingame): create modules for parsing requests
+    create one module for each kind of test response from Codingame API
+  * refactor(codingame): extract Codingame API in a folder
+    extract code relative to Codingame in a folder for future other Codingame modules
+  * docs(*): improve in-code readibility of the documentation
+    add dash-notation for '@param' descriptions
+  * chore(package): parse all file recursively with ESlint
+    call ESlint with all files in 'src' and 'test' folders, even subfolders
+  * docs(*): remove '@version' tags
+    remove '@version' tags that end up out of sync because not updated automatically
+  * chore(package): add a commit rule
+    add a 'commit' rule in 'package.json' in order to use locally commitizen
+  * chore(package): order scripts alias in package.json
+    order all the alias 'scripts' command of package.json in alphanumerical order
+  * chore(dev): Add semantic-release and commitizen
+    Improve development pratices with:
+    - 'semantic-release' that will release automatically based on the commits
+    - 'commitizen' to assist in producing standardized commits
+  * Update the changelog
+
 0.5.1 / 2016-11-05
 ==================
 
+  * Remove option '--version'
   * [#25](https://github.com/woshilapin/codingame-connector/issues/25) Remove the '--version' option
   * Remove changelog rule in prepublishing action
   * Update the Changelog
@@ -120,10 +159,3 @@
 ==================
 
   * 0.1.0
-  * Fix the binary for npm publishing
-
-0.0.1 / 2016-10-22
-==================
-
-  * Add link to 'asciinema' demo
-  * Initial upload
