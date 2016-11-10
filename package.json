@@ -1,6 +1,6 @@
 {
   "name": "codingame-connector",
-  "version": "0.5.1",
+  "version": "0.0.0-semantic-release",
   "description": "An interface for Codingame website",
   "keywords": [
     "codingame",
@@ -11,19 +11,24 @@
   "author": "woshilapin <woshilapin@tuziwo.info>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/woshilapin/codingame-connector.git"
+    "url": "https://github.com/woshilapin/codingame-connector.git"
   },
   "bugs": {
     "url": "https://github.com/woshilapin/codingame-connector/issues"
   },
   "main": "src/codingame-api.js",
+  "engine": {
+    "iojs": ">=1.0.0",
+    "node": ">=0.12",
+    "npm": ">=2.0.0"
+  },
   "scripts": {
     "build": "rimraf ./lib/* && babel src --out-dir lib",
     "changelog": "changelog codingame-connector all -m > CHANGELOG.md",
     "codecov": "nyc report --reporter=lcovonly && codecov",
     "commit": "git cz",
     "doc": "rimraf ./doc/* && jsdoc --configure .jsdocrc src/",
-	"lint": "eslint --cache --color src/**.js test/**.js",
+    "lint": "eslint --cache --color src/**.js test/**.js",
     "mocha": "mocha",
     "nyc": "nyc mocha",
     "prepublish": "npm run build",
