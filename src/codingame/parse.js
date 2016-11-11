@@ -31,7 +31,7 @@ let parse = function parse(response) {
 	for (let parser of parsers) {
 		try {
 			let promise = parser.parse(body);
-			return Promise.resolve(promise); // Resume loop if not Error has been thrown
+			return Promise.resolve(promise); // Resume loop if no Error has been thrown
 		} catch (error) {
 			continue;
 		}

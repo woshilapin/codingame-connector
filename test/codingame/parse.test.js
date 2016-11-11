@@ -74,11 +74,16 @@ describe(`[module] codingame/parse`, function() {
 		});
 		it(`should resolve with last information when frames are arriving`, function() {
 			let infos = `Landing phase starting\nX=2500m, Y=2700m, HSpeed=0m/s VSpeed=0m/s\nFuel=550l, Angle=0°, Power=0 (0.0m/s2)\n`;
+			let stdout = `0 0`;
+			let stderr = `debug information`;
+			let view = ` 0\n7000 3000 3.711 1.0 1.0 1 0 4 -90 90\n20 40 10 20 DIRECT 15 1\n7\n0 100\n1000 500\n1500 1500\n3000 1000\n4000 150\n5500 150\n6999 800\n2500 2700 0 0 550 0 0\n`;
 			let response = {
 				"success": {
 					"frames": [{
 						"gameInformation": infos,
-						"view": ` 0\n7000 3000 3.711 1.0 1.0 1 0 4 -90 90\n20 40 10 20 DIRECT 15 1\n7\n0 100\n1000 500\n1500 1500\n3000 1000\n4000 150\n5500 150\n6999 800\n2500 2700 0 0 550 0 0\n`,
+						"stdout": stdout,
+						"stderr": stderr,
+						"view": view,
 						"keyframe": true
 					}],
 					"gameId": 154447808,
@@ -90,16 +95,23 @@ describe(`[module] codingame/parse`, function() {
 			};
 			let parse = cgparse.parse(response);
 			return expect(parse).to.be.fulfilled
-				.and.to.eventually.be.a.string(infos);
+				.and.to.eventually.be.with.a.string(infos.trim())
+					.and.with.a.string(stdout)
+					.and.with.a.string(stderr);
 		})
 		it(`should reject when frames are arriving but score is 0`, function() {
-			let subinfo = `Failure: Mars Lander crashed on non-flat ground. Opportunity has been destroyed.`;
-			let infos = `¤RED¤${subinfo}§RED§\nX=2500m, Y=1167m, HSpeed=0m/s VSpeed=-47m/s\nFuel=456l, Angle=0°, Power=4 (4.0m/s2)\n`;
+			let subinfo = `Success: Mars Lander landed hard but Opportunity is ok!`;
+			let infos = `¤GREEN¤${subinfo}§GREEN§\nX=2500m, Y=1167m, HSpeed=0m/s VSpeed=-47m/s\nFuel=456l, Angle=0°, Power=4 (4.0m/s2)\n`;
+			let stdout = `0 0`;
+			let stderr = `debug information`;
+			let view = ` 0\n7000 3000 3.711 1.0 1.0 1 0 4 -90 90\n20 40 10 20 DIRECT 15 1\n7\n0 100\n1000 500\n1500 1500\n3000 1000\n4000 150\n5500 150\n6999 800\n2500 2700 0 0 550 0 0\n`;
 			let response = {
 				"success": {
 					"frames": [{
 						"gameInformation": infos,
-						"view": ` 0\n7000 3000 3.711 1.0 1.0 1 0 4 -90 90\n20 40 10 20 DIRECT 15 1\n7\n0 100\n1000 500\n1500 1500\n3000 1000\n4000 150\n5500 150\n6999 800\n2500 2700 0 0 550 0 0\n`,
+						"stdout": stdout,
+						"stderr": stderr,
+						"view": view,
 						"keyframe": true
 					}],
 					"gameId": 154447808,
@@ -112,7 +124,9 @@ describe(`[module] codingame/parse`, function() {
 			let parse = cgparse.parse(response);
 			return expect(parse).to.be.rejected
 				.and.to.eventually.have.a.property(`message`)
-				.with.string(subinfo);
+					.with.string(subinfo)
+					.and.with.a.string(stdout)
+					.and.with.a.string(stderr);
 		})
 		it(`should reject when bundle cannot compile`, function() {
 			let message = `SyntaxError: EOL while scanning string literal`;
