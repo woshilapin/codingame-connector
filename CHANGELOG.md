@@ -1,3 +1,23 @@
+0.7.0 / 2016-11-11
+==================
+
+  * feat: display stdout and stderr in log
+    improve output display with 'stdout', 'stderr' and better coloring system
+    closes [#37](https://github.com/woshilapin/codingame-connector/issues/37)
+  * docs: change link for license badge
+    link to the text of the license for the license badge in the README file
+
+0.6.1 / 2016-11-09
+==================
+
+  * fix: modify .npmignore to include subfolders
+    fix the .npmignore in order to get every file and folder of the package
+    closes [#36](https://github.com/woshilapin/codingame-connector/issues/36)
+  * chore: nullify version in package.json
+    put version in package.json to a null version because of semantic-release
+  * docs(changelog): update the changelog
+    update changelog from the new published version
+
 0.6.0 / 2016-11-09
 ==================
 
@@ -146,16 +166,3 @@
   * Possibility to use commands in configuration file for username/password
   * [#6](https://github.com/woshilapin/codingame-connector/issues/6) Log some message when bundle file doesn't exist
   * [#5](https://github.com/woshilapin/codingame-connector/issues/5) Resume when configuration file is not here
-  * [#1](https://github.com/woshilapin/codingame-connector/issues/1), [#7](https://github.com/woshilapin/codingame-connector/issues/7) Implement commands in configuration files (username/password)
-  * [#9](https://github.com/woshilapin/codingame-connector/issues/9) Put a simple 'travis.yml' file
-
-0.1.1 / 2016-10-22
-==================
-
-  * Fix binary name and update documentation
-  * Fix the binary name and update documentation
-
-0.1.0 / 2016-10-22
-==================
-
-  * 0.1.0
