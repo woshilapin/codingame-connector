@@ -64,7 +64,7 @@
     "cz-conventional-changelog": "^1.2.0",
     "eslint": "^3.10.0",
     "jsdoc": "^3.4.3",
-    "jsdoc-babel": "^0.2.1",
+    "jsdoc-babel": "^0.3.0",
     "mocha": "^3.1.2",
     "mock-fs": "^3.12.1",
     "mute": "^2.0.6",
