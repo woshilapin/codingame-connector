@@ -100,7 +100,7 @@ describe(`[module] utils`, function() {
 			});
 			// ESlint complains about 'for await loops'
 			// https://github.com/babel/babel-eslint/issues/415
-			for await (let result of utils.tests(parameters)) {
+			for await (let result of utils.tests(parameters)) { // eslint-disable-line semi
 				expect(result).to.have.be.ok;
 			}
 			expect(test).to.have.been.calledThrice;
