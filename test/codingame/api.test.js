@@ -76,7 +76,7 @@ describe(`[module] codingame/api`, function() {
 			nock.cleanAll();
 		});
 		it(`should resolve with metadata if test has succeeded`, function() {
-			let parse = sandbox.stub(cgparse, `parse`, function() {
+			let parse = sandbox.stub(cgparse, `parse`).callsFake(function() {
 				return Promise.resolve(meta);
 			})
 			nock(`https://www.codingame.com`)
@@ -88,7 +88,7 @@ describe(`[module] codingame/api`, function() {
 		});
 		it(`should reject with CodingameError if response is ok but test failed`, function() {
 			let message = `Error message`;
-			let parse = sandbox.stub(cgparse, `parse`, function() {
+			let parse = sandbox.stub(cgparse, `parse`).callsFake(function() {
 				let error = new CodingameError(message);
 				return Promise.reject(error);
 			})
@@ -101,7 +101,7 @@ describe(`[module] codingame/api`, function() {
 		});
 		it(`should reject with Error if parsing failed`, function() {
 			let message = `Error message`;
-			let parse = sandbox.stub(cgparse, `parse`, function() {
+			let parse = sandbox.stub(cgparse, `parse`).callsFake(function() {
 				let error = new Error(message);
 				return Promise.reject(error);
 			})

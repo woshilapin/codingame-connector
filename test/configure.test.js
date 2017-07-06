@@ -89,7 +89,7 @@ describe(`[module] configure`, function() {
 		let createInterface;
 		beforeEach(function() {
 			sandbox = sinon.sandbox.create();
-			createInterface = sandbox.stub(readline, `createInterface`, function() {
+			createInterface = sandbox.stub(readline, `createInterface`).callsFake(function() {
 				return {
 					"question": function(question, cb) {
 						cb(answer);

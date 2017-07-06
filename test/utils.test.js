@@ -41,10 +41,10 @@ describe(`[module] utils`, function() {
 			sandbox.restore();
 		});
 		it(`should resolve if login is successful`, function() {
-			let login = sandbox.stub(cgapi, `login`, function() {
+			let login = sandbox.stub(cgapi, `login`).callsFake(function() {
 				return Promise.resolve(true);
 			});
-			let get = sandbox.stub(configure, `get`, function(property) {
+			let get = sandbox.stub(configure, `get`).callsFake(function(property) {
 				return Promise.resolve(property);
 			});
 			let log = utils.login(`username`, `password`);
@@ -59,12 +59,12 @@ describe(`[module] utils`, function() {
 			]);
 		});
 		it(`should reject after 3 tries if authentication failed`, function() {
-			let login = sandbox.stub(cgapi, `login`, function() {
+			let login = sandbox.stub(cgapi, `login`).callsFake(function() {
 				return Promise.resolve({
 					"error": new Error(`Cannot authenticate`)
 				});
 			});
-			sandbox.stub(configure, `get`, function(property) {
+			sandbox.stub(configure, `get`).callsFake(function(property) {
 				return Promise.resolve(property);
 			});
 			let unmute = mute(process.stderr);
@@ -95,7 +95,7 @@ describe(`[module] utils`, function() {
 				"language": `Python`,
 				"bundle": `print('Hello world!')`
 			};
-			let test = sandbox.stub(cgapi, `test`, function() {
+			let test = sandbox.stub(cgapi, `test`).callsFake(function() {
 				return Promise.resolve(true);
 			});
 			// ESlint complains about 'for await loops'
