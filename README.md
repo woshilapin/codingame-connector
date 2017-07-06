@@ -12,6 +12,8 @@ friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](htt
 [![Code Quality](https://img.shields.io/scrutinizer/g/woshilapin/codingame-connector.svg)](https://scrutinizer-ci.com/g/woshilapin/codingame-connector/)
 
 # Presentation
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/woshilapin/codingame-connector.svg)](https://greenkeeper.io/)
 `codingame-connector` will help you to develop solutions for Codingame exercises
 on your local computer.  You don't need the browser to be open during your
 development process (save your RAM!).
