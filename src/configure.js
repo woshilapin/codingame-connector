@@ -23,9 +23,9 @@ let parameters = {};
  * @memberof module:configure
  * @instance
  */
-let load = function load(path, options) {
-	return new Promise(function(resolve, reject) {
-		let resolvefromerror = function resolvefromerror(error) {
+let load = (path, options) => {
+	return new Promise((resolve, reject) => {
+		let resolvefromerror = (error) => {
 			if (options !== undefined && typeof options === `object`) {
 				Object.assign(parameters, options);
 				resolve(options);
@@ -34,7 +34,7 @@ let load = function load(path, options) {
 			}
 		};
 		try {
-			fs.readFile(path, `utf8`, function(error, file) {
+			fs.readFile(path, `utf8`, (error, file) => {
 				if (error) {
 					resolvefromerror(error);
 				} else {
@@ -61,9 +61,9 @@ let load = function load(path, options) {
  * @param {string} cmd - Shell command to run
  * @returns {Promise<string>} A promise of the output of the shell command
  */
-let getShell = function getShell(cmd) {
-	return new Promise(function(resolve, reject) {
-		subprocess.exec(cmd, function(error, stdout, stderr) {
+let getShell = (cmd) => {
+	return new Promise((resolve, reject) => {
+		subprocess.exec(cmd, (error, stdout, stderr) => {
 			if (error) {
 				console.error(stderr);
 				reject(error);
@@ -83,9 +83,9 @@ let getShell = function getShell(cmd) {
  * @param {string} path - Path to the file
  * @returns {Promise<Object>} A promise of an object with `path` and `content`
  */
-let getFile = function getFile(path) {
-	return new Promise(function(resolve, reject) {
-		fs.readFile(path, `utf8`, function(error, data) {
+let getFile = (path) => {
+	return new Promise((resolve, reject) => {
+		fs.readFile(path, `utf8`, (error, data) => {
 			if (error) {
 				console.error(error.message);
 				reject(error);
@@ -107,8 +107,8 @@ let getFile = function getFile(path) {
  * @param {string} question - Question to ask to the end-user
  * @returns {Promise<string>} A promise of the answer of the end-user
  */
-let getQuestion = function getQuestion(question) {
-	return new Promise(function(resolve, reject) {
+let getQuestion = (question) => {
+	return new Promise((resolve, reject) => {
 		const rl = readline.createInterface({
 			"input": process.stdin,
 			"output": process.stdout
@@ -137,17 +137,17 @@ let getQuestion = function getQuestion(question) {
  * @memberof module:configure
  * @instance
  */
-let get = function get(name, option, question) {
-	return new Promise(function(resolve, reject) {
+let get = (name, option, question) => {
+	return new Promise((resolve, reject) => {
 		if (!name || typeof name !== `string`) {
 			reject(new Error(`'configure.get()' takes at least one string parameter.`));
 		}
 		let property = parameters[name];
 		if (property !== undefined && option !== undefined && option === `shell` && Array.isArray(property)) {
-			getShell(property.join(` `)).then(function(result) {
+			getShell(property.join(` `)).then((result) => {
 				parameters[name] = result;
 				resolve(result);
-			}, function(error) {
+			}, (error) => {
 				reject(error);
 			});
 		} else if (property !== undefined && option !== undefined && option === `file`) {
@@ -155,10 +155,10 @@ let get = function get(name, option, question) {
 		} else if (property !== undefined) {
 			resolve(property);
 		} else {
-			getQuestion(question).then(function(result) {
+			getQuestion(question).then((result) => {
 				parameters[name] = result;
 				resolve(result);
-			}, function(error) {
+			}, (error) => {
 				reject(error);
 			});
 		}
@@ -174,7 +174,7 @@ let get = function get(name, option, question) {
  * @memberof module:configure
  * @instance
  */
-let forget = function forget(name) {
+let forget = (name) => {
 	if (typeof name !== `string`) {
 		throw new Error(`'configure.forget()' function takes one string parameter.`);
 	} else {

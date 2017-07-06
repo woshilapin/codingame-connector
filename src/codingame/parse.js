@@ -26,7 +26,7 @@ parsers.push(parse_success);
  * @param {Object} response Body of the response
  * @returns {Promise<Object|CodingameError>} Resolve if test is a success, reject with a CodingameError if test failed or parsing was impossible
  */
-let parse = function parse(response) {
+let parse = (response) => {
 	let body = response.success;
 	for (let parser of parsers) {
 		try {

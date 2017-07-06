@@ -40,7 +40,7 @@ let name = `frames`;
  * @param {String} message Input message with Codingame formatting
  * @returns {String} Output message with ANSI coloring format
  */
-let colorize = function colorize(message) {
+let colorize = (message) => {
 	const colorlist = `(RED|GREEN)`;
 	const beginchar = `¤`;
 	const endchar = `§`;

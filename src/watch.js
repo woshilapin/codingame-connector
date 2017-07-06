@@ -21,14 +21,14 @@ colors.setTheme({
  * @name watch
  * @function
  */
-let watch = async function watch() {
+let watch = async () => {
 	let bundle = await configure.get(`bundle`);
 	let watcher = fs.watch(bundle, {
 		"persistent": false,
 		"recursive": false,
 		"encoding": `utf8`
 	});
-	watcher.on(`change`, async function(event) {
+	watcher.on(`change`, async (event) => {
 		if (event === `change`) {
 			process.stdout.write(ansi.clearScreen);
 			let [exercise, tests, language, bundle] = await Promise.all([
@@ -71,15 +71,15 @@ commander
 	.parse(process.argv);
 Promise.resolve(commander)
 // Load configuration file
-.then(function(commander) {
+.then((commander) => {
 	return configure.load(commander.configuration, {});
 })
 // Log in Codingame
-.then(function() {
+.then(() => {
 	return utils.login();
 }, utils.kill)
 // Launch wathing task
-.then(async function() {
+.then(async () => {
 	let bundle = await configure.get(`bundle`);
 	process.stdout.write(ansi.clearScreen);
 	console.log(`...watching '${bundle}'...`);

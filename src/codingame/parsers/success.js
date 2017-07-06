@@ -31,7 +31,7 @@ let name = `success`;
  * @throws {Error} Throw is parsing failed
  * @instance
  */
-let parse = function parse(body) {
+let parse = (body) => {
 	try {
 		let {
 			"output": output,

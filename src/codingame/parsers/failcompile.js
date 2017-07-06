@@ -37,7 +37,7 @@ let name = `fail-compile`;
  * @throws {Error} Throw is parsing failed
  * @instance
  */
-let parse = function parse(body) {
+let parse = (body) => {
 	try {
 		let {
 			"error": {

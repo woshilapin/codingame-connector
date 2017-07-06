@@ -18,7 +18,7 @@ import cgapi from './codingame/api.js';
  * @memberof module:utils
  * @instance
  */
-let kill = function kill(error) {
+let kill = (error) => {
 	console.error(`error: ${error.message}`);
 	process.exit(-1);
 };
@@ -33,21 +33,21 @@ let kill = function kill(error) {
  * @memberof module:utils
  * @instance
  */
-let login = function login(tries) {
+let login = (tries) => {
 	if (tries === undefined || typeof tries !== `number`) {
 		tries = 3;
 	}
 	let credentials = {};
 	return configure.get(`username`, `shell`, `login? `)
-	.then(function(username) {
+	.then((username) => {
 		credentials.username = username;
 		return configure.get(`password`, `shell`, `password? `);
 	})
-	.then(function(password) {
+	.then((password) => {
 		credentials.password = password;
 		return cgapi.login(credentials.username, credentials.password);
 	})
-	.then(function(res) {
+	.then((res) => {
 		if (!res.error) {
 			return Promise.resolve(res);
 		} else {

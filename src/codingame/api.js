@@ -22,8 +22,8 @@ import CodingameError from './error.js';
  * @memberof module:codingame/api
  * @instance
  */
-let login = function login(username, password) {
-	return new Promise(function(resolve, reject) {
+let login = (username, password) => {
+	return new Promise((resolve, reject) => {
 		let options = {
 			"method": `POST`,
 			"baseUrl": `https://www.codingame.com`,
@@ -36,7 +36,7 @@ let login = function login(username, password) {
 			"jar": true,
 			"json": true
 		};
-		request(options, function(error, response, body) {
+		request(options, (error, response, body) => {
 			if (response.statusCode >= 400) {
 				reject(error);
 			} else {
@@ -59,8 +59,8 @@ let login = function login(username, password) {
  * @memberof module:codingame/api
  * @instance
  */
-let test = function test(exercise, test, language, bundle) {
-	return new Promise(function(resolve, reject) {
+let test = (exercise, test, language, bundle) => {
+	return new Promise((resolve, reject) => {
 		let options = {
 			"method": `POST`,
 			"baseUrl": `https://www.codingame.com`,
@@ -82,7 +82,7 @@ let test = function test(exercise, test, language, bundle) {
 			"jar": true,
 			"json": true
 		};
-		request(options, function(error, response, body) {
+		request(options, (error, response, body) => {
 			if (response.statusCode >= 400) {
 				reject(error);
 			} else {
@@ -93,9 +93,9 @@ let test = function test(exercise, test, language, bundle) {
 					"bundle": bundle
 				};
 				cgparse.parse(body)
-					.then(function(success) {
+					.then((success) => {
 						resolve(meta);
-					}, function(error) {
+					}, (error) => {
 						if (error instanceof CodingameError) {
 							error.attach(meta);
 						}
