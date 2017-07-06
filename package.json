@@ -71,7 +71,7 @@
     "nock": "^9.0.9",
     "nyc": "^11.0.3",
     "rimraf": "^2.5.4",
-    "semantic-release": "^6.3.1",
+    "semantic-release": "^6.3.6",
     "sinon": "^2.3.4",
     "sinon-chai": "^2.11.0"
   },
