@@ -61,7 +61,7 @@
     "changelog": "^1.0.7",
     "codecov": "^2.2.0",
     "commitizen": "^2.8.6",
-    "cz-conventional-changelog": "^1.2.0",
+    "cz-conventional-changelog": "^2.0.0",
     "eslint": "^4.1.1",
     "jsdoc": "^3.4.3",
     "jsdoc-babel": "^0.3.0",
